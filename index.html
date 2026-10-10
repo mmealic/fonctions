@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les fonctions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#EEF3F7; --paper-2:#FFFFFF; --grid:#D6E2EC; --ink:#1B2A41; --ink-2:#51627A; --line:#C3D0DC;
+  --blue:#2F5BD3; --blue-soft:#DCE5FB; --green:#23945A; --green-soft:#D7F0E1; --amber:#D9900F; --amber-soft:#FBEBCB;
+  --red:#D0443A; --red-soft:#F8DAD7; --grey:#AEB9C5; --track:#DDE5EC; --shadow:0 3px 0 #C3D0DC;
+  --c1:#2F5BD3; --c2:#D0443A; --c3:#23945A; --c4:#B7750A; --pg:#C9D6E2; --pgm:#E3EBF2;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#131C2B; --paper-2:#1C2739; --grid:#1D2A3D; --ink:#E7EDF5; --ink-2:#9AAAC0; --line:#2E3D55;
+    --blue:#7FA2FF; --blue-soft:#22325A; --green:#3CC47C; --green-soft:#173A2A; --amber:#F0AE3C; --amber-soft:#3A2E17;
+    --red:#F0685E; --red-soft:#3D1F1F; --grey:#56657B; --track:#2A3850; --shadow:0 3px 0 #0B111B;
+    --c1:#7FA2FF; --c2:#F0685E; --c3:#3CC47C; --c4:#F0AE3C; --pg:#33445E; --pgm:#243247;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131C2B; --paper-2:#1C2739; --grid:#1D2A3D; --ink:#E7EDF5; --ink-2:#9AAAC0; --line:#2E3D55;
+  --blue:#7FA2FF; --blue-soft:#22325A; --green:#3CC47C; --green-soft:#173A2A; --amber:#F0AE3C; --amber-soft:#3A2E17;
+  --red:#F0685E; --red-soft:#3D1F1F; --grey:#56657B; --track:#2A3850; --shadow:0 3px 0 #0B111B;
+  --c1:#7FA2FF; --c2:#F0685E; --c3:#3CC47C; --c4:#F0AE3C; --pg:#33445E; --pgm:#243247;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:var(--body);color:var(--ink);background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:20px 20px;line-height:1.5;font-size:17px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px;overflow-x:hidden}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.015em;line-height:1.15}
+b{font-weight:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.btn{border:2px solid var(--line);background:var(--paper-2);border-radius:14px;padding:10px 18px;font-weight:700;box-shadow:var(--shadow)}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.go{background:var(--green);border-color:var(--green);color:#fff}
+.btn.ghost{background:transparent;box-shadow:none;border-color:transparent;color:var(--ink-2);font-weight:400;text-decoration:underline;padding:6px 8px}
+.btn.sm{padding:6px 12px;font-size:15px;border-radius:11px}
+.btn.on{background:var(--blue-soft);border-color:var(--blue)}
+.btn:disabled{opacity:.45;cursor:default}
+.lang{border:2px solid var(--line);background:var(--paper-2);border-radius:99px;padding:4px 4px;font-weight:700;font-size:14px;display:inline-flex;gap:2px}
+.lang span{padding:2px 9px;border-radius:99px;color:var(--ink-2)}
+.lang span.cur{background:var(--ink);color:var(--paper)}
+
+/* home / path */
+.hero{padding:28px 0 8px}
+.hero h1{font-size:clamp(34px,7vw,52px);margin:0 0 6px;font-weight:800}
+.hero p{margin:0;color:var(--ink-2);max-width:52ch}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.top h2{margin:0;font-size:26px}
+.chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{background:var(--paper-2);border:2px solid var(--line);border-radius:99px;padding:4px 12px;font-weight:700;font-size:15px}
+.path{position:relative;margin:30px auto 0;max-width:420px;padding-bottom:20px}
+.step{display:flex;flex-direction:column;align-items:center;margin-bottom:22px;position:relative}
+.step:nth-child(4n+2){transform:translateX(60px)} .step:nth-child(4n+4){transform:translateX(-60px)}
+.bubble{width:84px;height:84px;border-radius:50%;border:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:22px;color:#fff;background:var(--grey);box-shadow:0 6px 0 color-mix(in srgb,var(--grey) 60%,#000);position:relative}
+.bubble.done{background:var(--green);box-shadow:0 6px 0 color-mix(in srgb,var(--green) 60%,#000)}
+.bubble.now{background:var(--blue);box-shadow:0 6px 0 color-mix(in srgb,var(--blue) 60%,#000)}
+.bubble.pv{background:var(--blue);box-shadow:0 6px 0 color-mix(in srgb,var(--blue) 60%,#000)}
+.bubble.locked{cursor:default;background:var(--track);color:var(--grey);box-shadow:0 6px 0 var(--line)}
+.bubble:not(.locked):active{transform:translateY(5px);box-shadow:none}
+.bubble.now::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:3px solid var(--blue);animation:ring 1.8s ease-out infinite}
+@keyframes ring{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.bubble.now::after{animation:none}}
+.steplbl{margin-top:12px;font-weight:700;text-align:center;font-size:15px;max-width:190px;line-height:1.25}
+.stars{font-size:14px;letter-spacing:2px;color:var(--amber);height:18px}
+.stars .off{color:var(--track)}
+.pvbanner{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--amber-soft);border:2px solid var(--amber)}
+.pvbanner strong{display:block;font-family:var(--display)}.pvbanner span{font-size:15px}
+.tutor{margin-top:30px;font-size:14px;color:var(--ink-2);border-top:2px dashed var(--line);padding-top:14px}
+.tpanel{display:grid;gap:14px;margin:18px 0}
+.tpanel>div{background:var(--paper-2);border:2px solid var(--line);border-radius:16px;padding:14px 16px}
+.tpanel h3{margin:0 0 4px;font-size:19px}.tpanel p{margin:0 0 10px;color:var(--ink-2);font-size:15.5px}
+.report textarea{width:100%;min-height:340px;font:inherit;font-size:14.5px;padding:12px;border:2px solid var(--line);border-radius:12px;background:var(--paper-2);color:var(--ink)}
+
+/* lesson shell */
+.lesson{position:fixed;inset:0;background:var(--paper);z-index:30;display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.lesson.open{display:flex}
+.lhead{display:flex;align-items:center;gap:12px;padding:12px 16px;max-width:820px;width:100%;margin:0 auto}
+.bar{height:14px;border-radius:99px;background:var(--track);overflow:hidden;flex:1}
+.bar>div{height:100%;border-radius:99px;background:var(--green);transition:width .35s}
+.close{border:0;background:none;font-size:28px;line-height:1;color:var(--ink-2);padding:4px 8px}
+.combo{font-weight:700;color:var(--amber);font-size:14px;white-space:nowrap}
+.lbody{flex:1;overflow:auto;padding:4px 16px 24px;max-width:820px;width:100%;margin:0 auto}
+.kind{color:var(--ink-2);font-size:14px;margin:6px 0 4px;font-weight:700}
+.q{font-family:var(--display);font-weight:700;font-size:clamp(19px,4vw,24px);line-height:1.3;margin:2px 0 14px}
+.q.small{font-family:var(--body);font-weight:400;font-size:18px}
+.info{background:var(--paper-2);border:2px solid var(--line);border-radius:18px;padding:16px 18px;font-size:17px}
+.info h3{margin:0 0 10px;font-size:23px}
+.info p{margin:.5em 0}
+.ex{background:var(--blue-soft);border-radius:12px;padding:10px 14px;margin:12px 0}
+.warn{background:var(--red-soft);border-radius:12px;padding:10px 14px;margin:12px 0}
+.info table,.tbl{border-collapse:collapse;width:100%;font-size:15.5px;margin:10px 0}
+.info td,.info th,.tbl td,.tbl th{border:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+.info th,.tbl th{background:var(--paper)}
+.tw{overflow-x:auto}
+.fr-term{color:var(--ink-2);font-style:italic}
+.choices{display:grid;gap:12px}
+.choices.cols2{grid-template-columns:1fr 1fr}
+.choice{background:var(--paper-2);border:2px solid var(--line);border-radius:14px;padding:13px 16px;font-size:18px;box-shadow:var(--shadow);text-align:left;min-height:54px}
+.choice svg{display:block;width:100%;height:auto}
+.choice[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.choice.right{border-color:var(--green);background:var(--green-soft)}
+.choice.wrong{border-color:var(--red);background:var(--red-soft)}
+.choice:disabled{cursor:default}
+.tfrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tfrow .choice{text-align:center;font-weight:700}
+.numin{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.numin input{font-size:24px;font-family:var(--display);font-weight:700;width:180px;max-width:100%;padding:9px 14px;border:2px solid var(--line);border-radius:14px;background:var(--paper-2)}
+.numin input.right,.cell.right{border-color:var(--green);background:var(--green-soft)} .numin input.wrong,.cell.wrong{border-color:var(--red);background:var(--red-soft)}
+.unit{font-size:20px;color:var(--ink-2)}
+.slots{min-height:60px;border-bottom:2px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;padding:8px 0;margin-bottom:16px}
+.slots.col,.bank.col{flex-direction:column;align-items:stretch}
+.bank{display:flex;flex-wrap:wrap;gap:8px}
+.tile{background:var(--paper-2);border:2px solid var(--line);border-radius:12px;padding:8px 12px;box-shadow:0 2px 0 var(--line);font-size:17px;text-align:left;min-width:42px}
+.tile.mono{font-family:var(--display);font-weight:700;font-size:21px;text-align:center}
+.tile.used{visibility:hidden}
+.slots.right .tile{border-color:var(--green);background:var(--green-soft)} .slots.wrong .tile{border-color:var(--red)}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:flex;flex-direction:column;gap:10px}
+.mt{background:var(--paper-2);border:2px solid var(--line);border-radius:12px;padding:12px;min-height:52px;box-shadow:0 2px 0 var(--line);font-size:16.5px}
+.mt.sel{border-color:var(--blue);background:var(--blue-soft)}
+.mt.ok{border-color:var(--green);background:var(--green-soft);opacity:.6;cursor:default}
+.mt.bad{border-color:var(--red);background:var(--red-soft)}
+.lfoot{border-top:2px solid var(--line);background:var(--paper-2)}
+.lfoot.right{background:var(--green-soft);border-color:var(--green)} .lfoot.wrong{background:var(--red-soft);border-color:var(--red)}
+.lfoot .in{max-width:820px;margin:0 auto;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.fb{flex:1;min-width:220px;font-size:16px}
+.fb .verdict{font-family:var(--display);font-size:21px;display:block}
+.again{display:block;color:var(--ink-2);margin-top:4px}
+.end{text-align:center;padding-top:5vh}
+.end .big{font-family:var(--display);font-weight:800;font-size:52px;line-height:1;margin:0}
+.end .starbig{font-size:46px;letter-spacing:8px;color:var(--amber);margin:14px 0}
+.end .starbig .off{color:var(--track)}
+.endstats{display:flex;justify-content:center;gap:28px;margin-top:10px;color:var(--ink-2);flex-wrap:wrap}
+.endstats strong{display:block;font-family:var(--display);font-size:28px;color:var(--ink)}
+
+/* graphs */
+.plot{display:block;width:100%;max-width:440px;height:auto;margin:4px auto 10px;touch-action:none;user-select:none;-webkit-user-select:none}
+.plot text{font-family:var(--body);fill:var(--ink)}
+.plot .tk{font-size:11px;fill:var(--ink-2)}
+.plot .ttl{font-size:12.5px;font-weight:700}
+.plot.tap{cursor:crosshair}
+.pw{position:relative;max-width:440px;margin:0 auto}
+.pw .plot{margin:0 auto}
+.zone{position:absolute;transform:translate(-50%,-50%);min-width:44px;min-height:34px;border:2px dashed var(--blue);border-radius:10px;background:color-mix(in srgb,var(--paper-2) 85%,transparent);display:flex;align-items:center;justify-content:center;padding:2px;font-size:13px}
+.zone.hot{background:var(--blue-soft)}
+.zone .dchip{font-size:12px;padding:3px 6px;box-shadow:none;white-space:nowrap;border-radius:8px}
+.zone:has(.dchip){border-style:solid;min-height:0;padding:1px}
+.zone.right{border-color:var(--green);border-style:solid;background:var(--green-soft)}
+.zone.wrong{border-color:var(--red);border-style:solid;background:var(--red-soft)}
+.readout{text-align:center;font-family:var(--display);font-weight:700;font-size:19px;margin:2px 0 8px;min-height:1.4em}
+.readout small{display:block;font-family:var(--body);font-weight:400;font-size:15px;color:var(--ink-2)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 10px}
+.sl{display:flex;align-items:center;gap:10px;max-width:440px;margin:6px auto}
+.sl label{font-family:var(--display);font-weight:700;min-width:70px}
+.sl input[type=range]{flex:1;accent-color:var(--blue)}
+.formula{text-align:center;font-family:var(--display);font-weight:700;font-size:22px;margin:4px 0}
+.hint{color:var(--ink-2);font-size:15px;text-align:center;margin:2px 0 8px}
+.buckets{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:14px}
+.bucket{border:2px dashed var(--line);border-radius:14px;padding:8px;min-height:96px;background:color-mix(in srgb,var(--paper-2) 70%,transparent)}
+.bucket.hot{border-color:var(--blue);background:var(--blue-soft)}
+.bucket h4{margin:0 0 6px;font-family:var(--display);font-size:16px;text-align:center}
+.bucket .in{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.dchip{background:var(--paper-2);border:2px solid var(--line);border-radius:12px;padding:7px 10px;box-shadow:0 2px 0 var(--line);font-size:15.5px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;max-width:100%}
+.dchip svg{display:block;width:110px;height:auto}
+.dchip.sel{border-color:var(--blue);background:var(--blue-soft)}
+.dchip.right{border-color:var(--green);background:var(--green-soft)} .dchip.wrong{border-color:var(--red);background:var(--red-soft)}
+.dragghost{position:fixed;pointer-events:none;z-index:99;transform:translate(-50%,-60%) rotate(-3deg);opacity:.92;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:46px;padding:8px;border-radius:12px;background:var(--paper)}
+.ttable{border-collapse:collapse;margin:6px auto 10px;font-size:16px}
+.ttable td,.ttable th{border:1px solid var(--line);padding:5px 7px;text-align:center;min-width:44px}
+.ttable th{background:var(--paper);font-family:var(--display)}
+.cell{width:52px;padding:5px 4px;border:2px solid var(--line);border-radius:8px;text-align:center;background:var(--paper-2);font-size:16px}
+.axbox{display:grid;gap:10px;margin:6px 0 10px}
+.axbox .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.axbox .row>span:first-child{font-weight:700;min-width:150px}
+.numline-ctl{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;max-width:440px;margin:0 auto}
+.numline-ctl .grp{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.notation{text-align:center;font-family:var(--display);font-weight:800;font-size:30px;margin:6px 0}
+.machine{display:flex;align-items:flex-start;justify-content:center;gap:6px;margin:10px 0}.machine .marrow{margin-top:12px}.machine .mbox{margin-top:-14px}
+.mcol{display:flex;flex-direction:column;align-items:center;gap:4px}.mcol small{font-size:12.5px;color:var(--ink-2);text-align:center;line-height:1.2}
+.mbox{width:104px;height:86px;border-radius:16px;background:var(--blue);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:22px;border:3px dashed transparent}
+.mbox.hot{border-color:var(--amber)}
+.mbox small{font-size:13px;font-weight:500;opacity:.9}
+.mslot{min-width:58px;min-height:54px;border:2px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:24px;background:var(--paper-2)}
+.marrow{font-size:26px;color:var(--ink-2)}
+.sentence{text-align:center;font-size:17px;min-height:3em}
+.track{display:block;width:100%;max-width:440px;margin:0 auto;height:auto}
+.seglist{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:34px;margin:6px 0}
+.seglist span{background:var(--paper-2);border:2px solid var(--line);border-radius:99px;padding:2px 10px;font-size:14px}
+.pair{display:grid;grid-template-columns:1fr;gap:4px}
+@media (min-width:760px){.pair.two{grid-template-columns:1fr 1fr}}
+.cap{text-align:center;font-size:14px;color:var(--ink-2);margin:-6px 0 6px}
+.bil{color:var(--ink-2);font-style:italic;margin:2px 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<div class="lesson" id="lesson" role="dialog" aria-modal="true" aria-label="Leçon">
+  <div class="lhead">
+    <button class="close" id="lclose" aria-label="Quitter">×</button>
+    <div class="bar" aria-hidden="true"><div id="lprog" style="width:0"></div></div>
+    <span class="combo" id="combo"></span>
+    <button class="lang" id="langL" aria-label="Langue / Language"><span data-l="fr">FR</span><span data-l="en">EN</span></button>
+  </div>
+  <div class="lbody" id="lbody"></div>
+  <div class="lfoot" id="lfoot"><div class="in" id="lfootin"></div></div>
+</div>
+<script>
+/* =====================================================================
+   SETTINGS FOR THE TUTOR (change the text between the quotes)
+   ===================================================================== */
+
+// Optional. Leave empty: the student types their first name the first time.
+const STUDENT_NAME = "";
+
+// Your e-mail address: the "Envoyer mon rapport" button sends the report there
+const TUTOR_EMAIL = "";
+
+// Code to open the "Espace tuteur" (restart progress, unlock lessons)
+const TUTOR_CODE = "1234";
+
+/* =====================================================================
+   HOW TO EDIT
+   ---------------------------------------------------------------------
+   Every text is written twice: B("français", "English").
+   Lessons are in the section "LESSONS" (search for "L.repere", "L.image"...).
+   The first answer of an mcq(...) is always the correct one (shuffled on screen).
+   Keep quotes, commas and brackets exactly as they are.
+   ===================================================================== */
+
+/* ---------- helpers ---------- */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[ri(0,a.length-1)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const round=(n,d=4)=>Math.round(n*10**d)/10**d;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const todayStr=()=>new Date().toISOString().slice(0,10);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ---------- languages ---------- */
+let LANG="fr";
+const B=(fr,en)=>({fr,en});
+const tx=v=>v==null?"":(typeof v==="object"&&"fr" in v)?v[LANG]:String(v);
+const nf=n=>{const s=String(round(n,3));return (LANG==="fr"?s.replace(".",","):s).replace("-","−")};
+const parseNum=s=>{s=String(s).trim().replace(/\s/g,"").replace(",",".").replace("−","-");return s===""||isNaN(+s)?null:+s};
+
+/* ---------- pointer position inside an SVG ---------- */
+function svgXY(svg,e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const m=svg.getScreenCTM();return m?pt.matrixTransform(m.inverse()):{x:0,y:0}}
+
+/* ---------- PLOT ENGINE ---------- */
+let PLOT_ID=0;
+function Plot(o){
+  const P=Object.assign({xmin:-5,xmax:5,ymin:-5,ymax:5,w:360,h:300,xgrid:1,ygrid:1,xlab:0,ylab:0,xtitle:null,ytitle:null,labels:true,grid:true},o||{});
+  P.pad=Object.assign({l:34,r:16,t:24,b:28},P.pad||{});
+  if(!P.labels) P.pad=Object.assign({l:8,r:8,t:8,b:8},o&&o.pad||{});
+  P.xlab=P.xlab||P.xgrid; P.ylab=P.ylab||P.ygrid;
+  P.id="pl"+(++PLOT_ID);
+  const W=P.w,H=P.h,l=P.pad.l,r=P.pad.r,t=P.pad.t,b=P.pad.b;
+  P.sx=x=>l+(x-P.xmin)/(P.xmax-P.xmin)*(W-l-r);
+  P.sy=y=>H-b-(y-P.ymin)/(P.ymax-P.ymin)*(H-t-b);
+  P.ix=px=>P.xmin+(px-l)/(W-l-r)*(P.xmax-P.xmin);
+  P.iy=py=>P.ymin+(H-b-py)/(H-t-b)*(P.ymax-P.ymin);
+  const mult=(a,b,s)=>{const out=[];const st=Math.ceil(a/s-1e-9);for(let k=st;k*s<=b+1e-9;k++)out.push(round(k*s,6));return out};
+  P.base=()=>{
+    let g="";
+    if(P.grid){
+      for(const x of mult(P.xmin,P.xmax,P.xgrid)) g+=`<line x1="${P.sx(x)}" y1="${t}" x2="${P.sx(x)}" y2="${H-b}" style="stroke:var(--pgm)" stroke-width="1"/>`;
+      for(const y of mult(P.ymin,P.ymax,P.ygrid)) g+=`<line x1="${l}" y1="${P.sy(y)}" x2="${W-r}" y2="${P.sy(y)}" style="stroke:var(--pgm)" stroke-width="1"/>`;
+      for(const x of mult(P.xmin,P.xmax,P.xlab)) g+=`<line x1="${P.sx(x)}" y1="${t}" x2="${P.sx(x)}" y2="${H-b}" style="stroke:var(--pg)" stroke-width="1"/>`;
+      for(const y of mult(P.ymin,P.ymax,P.ylab)) g+=`<line x1="${l}" y1="${P.sy(y)}" x2="${W-r}" y2="${P.sy(y)}" style="stroke:var(--pg)" stroke-width="1"/>`;
+    }
+    const ax=P.sx(clamp(0,P.xmin,P.xmax)), ay=P.sy(clamp(0,P.ymin,P.ymax));
+    const S='style="stroke:var(--ink)" stroke-width="1.7"';
+    g+=`<line x1="${l-4}" y1="${ay}" x2="${W-r+6}" y2="${ay}" ${S}/><path d="M${W-r+6} ${ay} l-8 -4 v8 z" style="fill:var(--ink)"/>`;
+    g+=`<line x1="${ax}" y1="${H-b+4}" x2="${ax}" y2="${t-8}" ${S}/><path d="M${ax} ${t-8} l-4 8 h8 z" style="fill:var(--ink)"/>`;
+    if(P.labels){
+      for(const x of mult(P.xmin,P.xmax,P.xlab)){ if(x===0&&P.xmin<0) continue; g+=`<line x1="${P.sx(x)}" y1="${ay-3}" x2="${P.sx(x)}" y2="${ay+3}" ${S}/><text class="tk" x="${P.sx(x)}" y="${ay+14}" text-anchor="middle">${nf(x)}</text>`; }
+      for(const y of mult(P.ymin,P.ymax,P.ylab)){ if(y===0) continue; g+=`<line x1="${ax-3}" y1="${P.sy(y)}" x2="${ax+3}" y2="${P.sy(y)}" ${S}/><text class="tk" x="${ax-6}" y="${P.sy(y)+4}" text-anchor="end">${nf(y)}</text>`; }
+      if(P.xmin<0||P.ymin<0) g+=`<text class="tk" x="${ax-6}" y="${ay+14}" text-anchor="end">0</text>`;
+      if(P.xtitle) g+=`<text class="ttl" x="${W-r}" y="${ay-8}" text-anchor="end">${esc(tx(P.xtitle))}</text>`;
+      if(P.ytitle) g+=`<text class="ttl" x="${ax+8}" y="${t-6}" text-anchor="start">${esc(tx(P.ytitle))}</text>`;
+    }
+    return g;
+  };
+  P.curve=(f,o={})=>{
+    const a=o.from??P.xmin, z=o.to??P.xmax, n=o.n||260; let d="", pen=false;
+    const lim=(P.ymax-P.ymin)*3;
+    for(let i=0;i<=n;i++){ const x=a+(z-a)*i/n, y=f(x);
+      if(!isFinite(y)||y>P.ymax+lim||y<P.ymin-lim){pen=false;continue}
+      d+=(pen?"L":"M")+P.sx(x).toFixed(1)+" "+P.sy(y).toFixed(1)+" "; pen=true; }
+    return `<path d="${d}" fill="none" style="stroke:${o.color||"var(--c1)"}" stroke-width="${o.w||2.6}" ${o.dash?`stroke-dasharray="${o.dash}"`:""} stroke-linecap="round" stroke-linejoin="round" ${o.id?`id="${o.id}"`:""}/>`;
+  };
+  P.seg=(x1,y1,x2,y2,o={})=>`<line x1="${P.sx(x1)}" y1="${P.sy(y1)}" x2="${P.sx(x2)}" y2="${P.sy(y2)}" style="stroke:${o.color||"var(--c1)"}" stroke-width="${o.w||2.6}" stroke-linecap="round" ${o.dash?`stroke-dasharray="${o.dash}"`:""}/>`;
+  P.poly=(pts,o={})=>`<polyline points="${pts.map(([x,y])=>P.sx(x).toFixed(1)+","+P.sy(y).toFixed(1)).join(" ")}" fill="none" style="stroke:${o.color||"var(--c1)"}" stroke-width="${o.w||2.6}" stroke-linejoin="round" stroke-linecap="round" ${o.dash?`stroke-dasharray="${o.dash}"`:""}/>`;
+  P.dot=(x,y,o={})=>`<circle cx="${P.sx(x)}" cy="${P.sy(y)}" r="${o.r||5}" style="fill:${o.fill||o.color||"var(--c1)"};stroke:${o.stroke||"var(--paper-2)"}" stroke-width="1.5"/>`+(o.label?`<text x="${P.sx(x)+(o.dx??8)}" y="${P.sy(y)+(o.dy??-8)}" font-size="13" font-weight="700" style="fill:${o.color||"var(--ink)"}" text-anchor="${o.anchor||"start"}">${esc(tx(o.label))}</text>`:"");
+  P.text=(x,y,s,o={})=>`<text x="${P.sx(x)+(o.dx||0)}" y="${P.sy(y)+(o.dy||0)}" font-size="${o.size||13}" font-weight="700" style="fill:${o.color||"var(--ink)"}" text-anchor="${o.anchor||"middle"}">${esc(tx(s))}</text>`;
+  P.svg=(inner="",cls="")=>`<svg class="plot ${cls}" id="${P.id}" viewBox="0 0 ${W} ${H}" role="img"><defs><clipPath id="${P.id}c"><rect x="${l}" y="${t-4}" width="${W-l-r}" height="${H-t-b+8}"/></clipPath></defs>${P.base()}<g clip-path="url(#${P.id}c)">${inner}</g><g class="ov"></g></svg>`;
+  return P;
+}
+/* small thumbnail graph */
+function thumb(draw,o={}){const P=Plot(Object.assign({w:160,h:120,labels:false,grid:true,xmin:-1,xmax:6,ymin:-1,ymax:6},o));return P.svg(draw(P),"thumb")}
+
+/* ---------- drag & drop (works with mouse and finger; tap-tap also works) ---------- */
+function dnd(root,chipSel,zoneSel,onDrop){
+  let sel=null;
+  const zoneAt=(x,y)=>{const el=document.elementFromPoint(x,y);return el&&el.closest(zoneSel)&&root.contains(el.closest(zoneSel))?el.closest(zoneSel):null};
+  root.querySelectorAll(chipSel).forEach(ch=>{
+    ch.addEventListener("pointerdown",e=>{
+      if(ch.dataset.lock) return; e.preventDefault();
+      const sx=e.clientX,sy=e.clientY; let ghost=null,hot=null;
+      try{ch.setPointerCapture(e.pointerId)}catch(_){}
+      const mv=ev=>{
+        if(!ghost&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>7){ghost=ch.cloneNode(true);ghost.classList.add("dragghost");ghost.style.width=ch.offsetWidth+"px";document.body.appendChild(ghost);ch.style.opacity=".35"}
+        if(ghost){ghost.style.left=ev.clientX+"px";ghost.style.top=ev.clientY+"px";const z=zoneAt(ev.clientX,ev.clientY);if(hot&&hot!==z)hot.classList.remove("hot");if(z){z.classList.add("hot");hot=z}}
+      };
+      const up=ev=>{
+        ch.removeEventListener("pointermove",mv);ch.removeEventListener("pointerup",up);ch.removeEventListener("pointercancel",up);
+        ch.style.opacity="";if(hot)hot.classList.remove("hot");
+        if(ghost){ghost.remove();const z=zoneAt(ev.clientX,ev.clientY);sel=null;root.querySelectorAll(chipSel).forEach(c=>c.classList.remove("sel"));if(z)onDrop(ch,z)}
+        else{ const was=sel===ch; root.querySelectorAll(chipSel).forEach(c=>c.classList.remove("sel")); sel=was?null:ch; if(sel)ch.classList.add("sel"); }
+      };
+      ch.addEventListener("pointermove",mv);ch.addEventListener("pointerup",up);ch.addEventListener("pointercancel",up);
+    });
+  });
+  root.querySelectorAll(zoneSel).forEach(z=>z.addEventListener("click",e=>{ if(sel&&!e.target.closest(chipSel)){const c=sel;sel=null;c.classList.remove("sel");onDrop(c,z)} }));
+  return {clear:()=>{sel=null}};
+}
+/* =====================================================================
+   INTERACTIVE WIDGETS (used inside lesson cards)
+   ===================================================================== */
+const W={};
+
+/* drag a point along a curve and read (x ; f(x)) */
+W.trace=o=>el=>{
+  const P=Plot(o.plot), f=o.f, a=o.from??P.xmin, z=o.to??P.xmax, snap=o.snap||0.5;
+  el.innerHTML=`${P.svg(P.curve(f,{from:a,to:z,color:o.color})+`<g class="dyn"></g>`,"tap")}<div class="readout" id="${P.id}r"></div><p class="hint">${tx(B("Fais glisser le point sur la courbe.","Drag the point along the curve."))}</p>`;
+  const svg=el.querySelector("svg"), dyn=svg.querySelector(".dyn"), ro=el.querySelector(".readout");
+  let x=o.start??a;
+  const draw=()=>{const y=f(x);
+    dyn.innerHTML=P.seg(x,0,x,y,{color:"var(--c2)",w:1.6,dash:"5 4"})+P.seg(0,y,x,y,{color:"var(--c3)",w:1.6,dash:"5 4"})+
+      P.dot(x,0,{color:"var(--c2)",r:4})+P.dot(0,y,{color:"var(--c3)",r:4})+P.dot(x,y,{r:9,color:"var(--amber)"});
+    ro.innerHTML=`<span style="color:var(--c2)">x = ${nf(x)}</span> &nbsp;→&nbsp; <span style="color:var(--c3)">${o.fname||"f"}(${nf(x)}) = ${nf(round(y,2))}</span><small>${tx(B(`L'image de ${nf(x)} est ${nf(round(y,2))}.`,`The image of ${nf(x)} is ${nf(round(y,2))}.`))}</small>`};
+  const mv=e=>{const p=svgXY(svg,e);x=clamp(Math.round(P.ix(p.x)/snap)*snap,a,z);x=round(x,4);draw()};
+  svg.addEventListener("pointerdown",e=>{svg.setPointerCapture(e.pointerId);mv(e);svg.onpointermove=mv});
+  svg.addEventListener("pointerup",()=>{svg.onpointermove=null});
+  draw();
+};
+
+/* drag a horizontal line y = k and see the antécédents */
+W.hline=o=>el=>{
+  const P=Plot(o.plot), f=o.f, a=o.from??P.xmin, z=o.to??P.xmax, snap=o.snap||0.5;
+  el.innerHTML=`${P.svg(P.curve(f,{from:a,to:z})+`<g class="dyn"></g>`,"tap")}<div class="readout"></div><p class="hint">${tx(B("Fais glisser la ligne verte vers le haut ou le bas.","Drag the green line up or down."))}</p>`;
+  const svg=el.querySelector("svg"), dyn=svg.querySelector(".dyn"), ro=el.querySelector(".readout");
+  let k=o.k0??1;
+  const roots=k=>{const n=1600,r=[];let px=a,py=f(a)-k;if(Math.abs(py)<1e-7)r.push(a);
+    for(let i=1;i<=n;i++){const x=a+(z-a)*i/n,y=f(x)-k; if(Math.abs(y)<1e-7)r.push(x); else if(py*y<0&&Math.abs(py)>1e-7)r.push(px+(x-px)*(-py)/(y-py)); px=x;py=y}
+    const out=[];for(const x of r){const v=round(x,2);if(!out.some(u=>Math.abs(u-v)<0.05))out.push(v)}return out};
+  const draw=()=>{const rs=roots(k);
+    dyn.innerHTML=P.seg(P.xmin,k,P.xmax,k,{color:"var(--c3)",w:2.2})+rs.map(x=>P.seg(x,k,x,0,{color:"var(--c2)",w:1.6,dash:"5 4"})+P.dot(x,0,{color:"var(--c2)",r:5})+P.dot(x,k,{color:"var(--amber)",r:6})).join("")+P.dot(0,k,{color:"var(--c3)",r:6});
+    const list=rs.map(nf).join(LANG==="fr"?" et ":" and ");
+    ro.innerHTML=`<span style="color:var(--c3)">k = ${nf(k)}</span><small>${rs.length?tx(B(`${rs.length} antécédent${rs.length>1?"s":""} de ${nf(k)} : ${list}`,`${nf(k)} has ${rs.length} antécédent${rs.length>1?"s":""} (pre-image${rs.length>1?"s":""}): ${list}`)):tx(B(`${nf(k)} n'a aucun antécédent : la ligne ne touche pas la courbe.`,`${nf(k)} has no antécédent: the line doesn't touch the curve.`))}</small>`};
+  const mv=e=>{const p=svgXY(svg,e);k=clamp(Math.round(P.iy(p.y)/snap)*snap,P.ymin,P.ymax);k=round(k,4);draw()};
+  svg.addEventListener("pointerdown",e=>{svg.setPointerCapture(e.pointerId);mv(e);svg.onpointermove=mv});
+  svg.addEventListener("pointerup",()=>{svg.onpointermove=null});
+  draw();
+};
+
+/* vertical line test */
+W.vline=()=>el=>{
+  const curves=[
+    {n:B("Parabole","Parabola"),fn:true,d:P=>P.curve(x=>x*x/2-2),hits:c=>[c*c/2-2]},
+    {n:B("Droite","Line"),fn:true,d:P=>P.curve(x=>x/2+1),hits:c=>[c/2+1]},
+    {n:B("Cercle","Circle"),fn:false,d:P=>`<circle cx="${P.sx(0)}" cy="${P.sy(0)}" r="${P.sx(3)-P.sx(0)}" fill="none" style="stroke:var(--c1)" stroke-width="2.6"/>`,hits:c=>Math.abs(c)<=3?(Math.abs(c)===3?[0]:[Math.sqrt(9-c*c),-Math.sqrt(9-c*c)]):[]},
+    {n:B("Parabole couchée","Sideways parabola"),fn:false,d:P=>{let pts=[];for(let i=0;i<=120;i++){const y=-4+8*i/120;pts.push([y*y/2-3,y])}return P.poly(pts)},hits:c=>c>-3?[Math.sqrt(2*(c+3)),-Math.sqrt(2*(c+3))]:(c===-3?[0]:[])},
+  ];
+  let cur=0,c=1;
+  const render=()=>{
+    const P=Plot({xmin:-5,xmax:5,ymin:-5,ymax:5,w:340,h:300});
+    el.innerHTML=`<div class="tabs">${curves.map((k,i)=>`<button class="btn sm ${i===cur?"on":""}" data-i="${i}">${tx(k.n)}</button>`).join("")}</div>${P.svg(curves[cur].d(P)+`<g class="dyn"></g>`,"tap")}<div class="readout"></div><p class="hint">${tx(B("Fais glisser la ligne rouge de gauche à droite.","Drag the red line from left to right."))}</p>`;
+    el.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;render()});
+    const svg=el.querySelector("svg"),dyn=svg.querySelector(".dyn"),ro=el.querySelector(".readout");
+    const draw=()=>{const hs=curves[cur].hits(c).filter(y=>y>=-5&&y<=5);
+      dyn.innerHTML=P.seg(c,-5,c,5,{color:"var(--c2)",w:2.2})+hs.map(y=>P.dot(c,y,{color:"var(--amber)",r:7})).join("");
+      const ok=hs.length<=1;
+      ro.innerHTML=`<span style="color:${ok?"var(--green)":"var(--red)"}">${tx(B(`${hs.length} point${hs.length>1?"s":""} touché${hs.length>1?"s":""}`,`${hs.length} point${hs.length>1?"s":""} hit`))}</span><small>${curves[cur].fn?tx(B("Jamais plus d'un point : c'est une fonction.","Never more than one point: it is a function.")):tx(B("Parfois 2 points : un même x aurait 2 images. Ce n'est pas une fonction.","Sometimes 2 points: one x would have 2 images. It is not a function."))}</small>`};
+    const mv=e=>{const p=svgXY(svg,e);c=clamp(Math.round(P.ix(p.x)*2)/2,-5,5);draw()};
+    svg.addEventListener("pointerdown",e=>{svg.setPointerCapture(e.pointerId);mv(e);svg.onpointermove=mv});
+    svg.addEventListener("pointerup",()=>{svg.onpointermove=null});
+    draw();
+  };
+  render();
+};
+
+/* gallery of shapes */
+W.shapes=()=>el=>{
+  const S=[
+    {n:B("Constante","Constant"),f:"f(x) = 3",d:P=>P.curve(()=>3),t:B("Une <b>droite horizontale</b> : f(x) vaut toujours 3, quel que soit x. Dans la vie : une voiture garée, sa distance au départ ne change pas.","A <b>horizontal line</b>: f(x) is always 3, whatever x is. Real life: a parked car, its distance from the start doesn't change.")},
+    {n:B("Affine","Linear"),f:"f(x) = 2x − 1",d:P=>P.curve(x=>2*x-1),t:B("Une <b>droite</b> qui monte : à chaque fois que x augmente de 1, f(x) augmente de 2 (toujours la même quantité). On dit <i>affine</i> (et <i>linéaire</i> quand elle passe par l'origine).","A straight <b>line</b> going up: each time x goes up by 1, f(x) goes up by 2 (always the same amount). In French: <i>fonction affine</i> (and <i>linéaire</i> when it goes through the origin).")},
+    {n:B("Carré","Quadratic"),f:"f(x) = x²",d:P=>P.curve(x=>x*x),t:B("Une <b>parabole</b> en forme de U, symétrique. Elle descend puis remonte, de plus en plus vite.","A U-shaped <b>parabola</b> (parabole), symmetrical. It goes down, then up again, faster and faster.")},
+    {n:B("Exponentielle","Exponential"),f:"f(x) = 2<sup>x</sup>",d:P=>P.curve(x=>2**x),t:B("À chaque fois que x augmente de 1, f(x) est <b>multiplié</b> par 2. Elle grandit doucement, puis explose. Elle ne touche jamais l'axe des abscisses.","Each time x goes up by 1, f(x) is <b>multiplied</b> by 2. It grows slowly, then explodes. It never touches the x-axis (axe des abscisses).")},
+    {n:B("Verticale","Vertical"),f:"x = 2",d:P=>P.seg(2,-6,2,6,{color:"var(--c2)"}),t:B("<b>Pas une fonction !</b> Le nombre 2 aurait une infinité d'images. Dans la vie, sur un graphique distance-temps : être à plusieurs endroits au même instant. Impossible.","<b>Not a function!</b> The number 2 would have infinitely many images. Real life, on a distance-time graph: being in several places at the same moment. Impossible.")},
+  ];
+  let cur=0;
+  const render=()=>{const P=Plot({xmin:-4,xmax:4,ymin:-3,ymax:6,w:340,h:290});
+    el.innerHTML=`<div class="tabs">${S.map((s,i)=>`<button class="btn sm ${i===cur?"on":""}" data-i="${i}">${tx(s.n)}</button>`).join("")}</div><div class="formula">${S[cur].f}</div>${P.svg(S[cur].d(P))}<p>${tx(S[cur].t)}</p>`;
+    el.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;render()});};
+  render();
+};
+
+/* sliders: play with a and b */
+W.sliders=()=>el=>{
+  let mode=0;const st={a:1,b:0,q:1,base:2};
+  const tabs=[B("Affine : ax + b","Linear: ax + b"),B("Carré : ax²","Quadratic: ax²"),B("Exponentielle : bˣ","Exponential: bˣ")];
+  const CTL=[[["a",-3,3,0.5],["b",-4,4,1]],[["q",-2,2,0.25]],[["base",0.5,3,0.25]]];
+  const lab={a:"a",b:"b",q:"a",base:"b"};
+  const update=()=>{const {a,b,q,base}=st;let f,formula,note;
+    if(mode===0){f=x=>a*x+b;formula=`f(x) = ${nf(a)}x ${b<0?"−":"+"} ${nf(Math.abs(b))}`;note=a===0?B("a = 0 : la droite est horizontale (fonction constante).","a = 0: the line is horizontal (constant function)."):a>0?B("a > 0 : la droite monte. Plus a est grand, plus elle est penchée. b est l'endroit où elle coupe l'axe des ordonnées.","a > 0: the line goes up. The bigger a, the steeper. b is where it crosses the y-axis (axe des ordonnées)."):B("a < 0 : la droite descend. b est l'endroit où elle coupe l'axe des ordonnées.","a < 0: the line goes down. b is where it crosses the y-axis (axe des ordonnées).")}
+    else if(mode===1){f=x=>q*x*x;formula=`f(x) = ${nf(q)}x²`;note=q===0?B("a = 0 : il ne reste que f(x) = 0, une droite.","a = 0: only f(x) = 0 is left, a line."):q>0?B("a > 0 : la parabole est ouverte vers le haut (U).","a > 0: the parabola opens upwards (U)."):B("a < 0 : la parabole est ouverte vers le bas (∩).","a < 0: the parabola opens downwards (∩).")}
+    else{f=x=>base**x;formula=`f(x) = ${nf(base)}<sup>x</sup>`;note=base===1?B("b = 1 : 1ˣ vaut toujours 1, c'est constant.","b = 1: 1ˣ is always 1, it's constant."):base>1?B("b > 1 : croissance exponentielle, elle explose vers la droite.","b > 1: exponential growth, it explodes to the right."):B("b < 1 : décroissance exponentielle, elle s'écrase vers 0.","b < 1: exponential decay, it shrinks towards 0.")}
+    const P=Plot({xmin:-4,xmax:4,ymin:-5,ymax:6,w:340,h:290});
+    el.querySelector(".formula").innerHTML=formula;el.querySelector(".pbox").innerHTML=P.svg(P.curve(f));el.querySelector(".note").textContent=tx(note);
+    el.querySelectorAll("[data-k]").forEach(r=>{r.previousElementSibling.textContent=`${lab[r.dataset.k]} = ${nf(st[r.dataset.k])}`})};
+  const render=()=>{
+    el.innerHTML=`<div class="tabs">${tabs.map((t,i)=>`<button class="btn sm ${i===mode?"on":""}" data-i="${i}">${tx(t)}</button>`).join("")}</div><div class="formula"></div><div class="pbox"></div>${CTL[mode].map(([k,mn,mx,sp])=>`<div class="sl"><label></label><input type="range" min="${mn}" max="${mx}" step="${sp}" value="${st[k]}" data-k="${k}" aria-label="${lab[k]}"></div>`).join("")}<p class="hint note"></p>`;
+    el.querySelectorAll(".tabs button").forEach(bt=>bt.onclick=()=>{mode=+bt.dataset.i;render()});
+    el.querySelectorAll("[data-k]").forEach(r=>r.oninput=()=>{st[r.dataset.k]=+r.value;update()});
+    update()};
+  render();
+};
+
+/* race: linear vs quadratic vs exponential */
+W.race=()=>el=>{
+  let d=3;
+  const F=[{n:"A",f:x=>20*x,lab:"20x",c:"var(--c1)"},{n:"B",f:x=>x*x,lab:"x²",c:"var(--c3)"},{n:"C",f:x=>2**x,lab:"2<sup>x</sup>",c:"var(--c2)"}];
+  el.innerHTML=`<div class="pbox"></div><div class="sl"><label></label><input type="range" min="0" max="12" step="1" value="${d}" aria-label="${tx(B("Jour","Day"))}"></div><div class="tbox"></div><p class="hint"></p>`;
+  const update=()=>{
+    const vals=F.map(k=>k.f(d)), top=Math.max(...vals), ym=Math.max(60,Math.ceil(top*1.15/10)*10);
+    const yl=[10,20,50,100,200,500,1000].find(s=>ym/s<=6)||1000;
+    const P=Plot({xmin:0,xmax:12,ymin:0,ymax:ym,w:340,h:270,xgrid:1,xlab:2,ygrid:yl,ylab:yl,pad:{l:44},xtitle:B("jours","days"),ytitle:"€"});
+    const lead=vals.indexOf(top);
+    el.querySelector(".pbox").innerHTML=P.svg(F.map(k=>P.curve(k.f,{from:0,to:12,color:k.c,w:2.2})+P.dot(d,k.f(d),{color:k.c,r:6})).join("")+P.seg(d,0,d,ym,{color:"var(--ink-2)",w:1,dash:"4 4"}));
+    el.querySelector("label").textContent=`${tx(B("Jour","Day"))} ${d}`;
+    el.querySelector(".tbox").innerHTML=`<table class="ttable"><tr><th></th>${F.map(k=>`<th style="color:${k.c}">${k.n} : ${k.lab}</th>`).join("")}</tr><tr><th>${tx(B("jour","day"))} ${d}</th>${vals.map((v,i)=>`<td style="${i===lead?"font-weight:700;background:var(--amber-soft)":""}">${nf(v)} €</td>`).join("")}</tr></table>`;
+    el.querySelector(".hint").textContent=tx(B(`En tête au jour ${d} : ${F[lead].n}. Fais avancer les jours pour voir qui gagne à la fin.`,`Leader on day ${d}: ${F[lead].n}. Move the days forward to see who wins in the end.`));
+  };
+  el.querySelector("input").oninput=e=>{d=+e.target.value;update()};
+  update();
+};
+
+/* the function machine: drag a number into the machine */
+W.machine=()=>el=>{
+  const fs=[{n:"f",lab:"2x + 3",f:x=>2*x+3},{n:"g",lab:"x²",f:x=>x*x}];
+  let cur=0,hist=[];
+  const render=()=>{const F=fs[cur];
+    const last=hist[hist.length-1];
+    el.innerHTML=`<div class="tabs">${fs.map((k,i)=>`<button class="btn sm ${i===cur?"on":""}" data-i="${i}">${k.n}(x) = ${k.lab}</button>`).join("")}</div>
+    <div class="machine"><div class="mcol"><div class="mslot">${last?nf(last[0]):"?"}</div><small>${tx(B("antécédent<br>(entrée)","antécédent<br>(input)"))}</small></div><span class="marrow">→</span><div class="mbox" id="mbox">${F.n}<small>${F.n}(x) = ${F.lab}</small></div><span class="marrow">→</span><div class="mcol"><div class="mslot" style="border-color:var(--green)">${last?nf(last[1]):"?"}</div><small>${tx(B("image<br>(sortie)","image<br>(output)"))}</small></div></div>
+    <div class="pool">${[-3,-1,0,2,3,5].map(v=>`<button class="dchip" data-v="${v}">${nf(v)}</button>`).join("")}</div>
+    <p class="hint">${tx(B("Fais glisser un nombre dans la machine (ou touche-le, puis touche la machine).","Drag a number into the machine (or tap it, then tap the machine)."))}</p>
+    <div class="sentence">${last?tx(B(`${F.n}(${nf(last[0])}) = ${nf(last[1])} : <b>${nf(last[1])} est l'image de ${nf(last[0])}</b> et <b>${nf(last[0])} est un antécédent de ${nf(last[1])}</b>.`,`${F.n}(${nf(last[0])}) = ${nf(last[1])}: <b>${nf(last[1])} is the image of ${nf(last[0])}</b> and <b>${nf(last[0])} is an antécédent (pre-image) of ${nf(last[1])}</b>.`)):""}</div>
+    ${hist.length>1?`<table class="ttable"><tr><th>x</th>${hist.map(h=>`<td>${nf(h[0])}</td>`).join("")}</tr><tr><th>${F.n}(x)</th>${hist.map(h=>`<td>${nf(h[1])}</td>`).join("")}</tr></table>${cur===1&&hist.some(h=>hist.some(k=>k!==h&&k[1]===h[1]))?`<p class="hint" style="color:var(--green)">${tx(B("Deux antécédents différents donnent la même image : c'est permis !","Two different antécédents give the same image: that's allowed!"))}</p>`:""}`:""}`;
+    el.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;hist=[];render()});
+    dnd(el,".dchip","#mbox",ch=>{const v=+ch.dataset.v;const y=fs[cur].f(v);hist=hist.filter(h=>h[0]!==v);hist.push([v,y]);render()});
+  };
+  render();
+};
+
+/* runner with distance-time and speed-time graphs drawing themselves */
+function simulate(segs){
+  let t0=0,x0=0;const S=[];
+  for(const s of segs){const a=s.a||0;S.push({t0,x0,v0:s.v0,a,d:s.d});x0+=s.v0*s.d+a*s.d*s.d/2;t0+=s.d}
+  const T=t0||1, find=t=>S.find(s=>t<=s.t0+s.d+1e-9)||S[S.length-1];
+  const pos=t=>{if(!S.length)return 0;const s=find(t),u=clamp(t-s.t0,0,s.d);return s.x0+s.v0*u+s.a*u*u/2};
+  const vel=t=>{if(!S.length)return 0;const s=find(t),u=clamp(t-s.t0,0,s.d);return s.v0+s.a*u};
+  return {T,pos,vel,S};
+}
+const niceStep=(range,max=7)=>[1,2,5,10,20,50,100].find(s=>range/s<=max)||100;
+const RUN_SCEN=[
+  {n:B("Il court","He runs"),segs:[{v0:4,d:10}],t:B("Vitesse constante de 4 m/s : la distance monte en <b>ligne droite</b> (fonction affine) et la vitesse est une <b>droite horizontale</b> (constante).","Constant speed of 4 m/s: the distance goes up in a <b>straight line</b> (linear function) and the speed is a <b>horizontal line</b> (constant).")},
+  {n:B("Avec une pause","With a break"),segs:[{v0:4,d:6},{v0:0,d:4},{v0:4,d:6}],t:B("Pendant la pause, la distance <b>ne change pas</b> : le graphique distance-temps est horizontal, et la vitesse vaut 0.","During the break, the distance <b>doesn't change</b>: the distance-time graph is horizontal, and the speed is 0.")},
+  {n:B("Aller-retour","There and back"),segs:[{v0:4,d:8},{v0:0,d:4},{v0:-4,d:8}],t:B("Au retour, il se rapproche du départ : la distance <b>descend</b>. Il va dans l'autre sens, donc sa vitesse est <b>négative</b> : −4 m/s.","On the way back, he gets closer to the start: the distance <b>goes down</b>. He moves the other way, so his speed is <b>negative</b>: −4 m/s.")},
+  {n:B("Il accélère","He speeds up"),segs:[{v0:0,a:0.8,d:10}],t:B("La vitesse augmente <b>régulièrement</b> (droite qui monte). Chaque seconde il parcourt un peu plus que la seconde d'avant : la distance augmente de plus en plus vite, c'est une <b>parabole</b> (fonction carré) : d = 0,4 t².","The speed increases <b>steadily</b> (a rising line). Each second he covers a bit more than the second before: the distance grows faster and faster, it is a <b>parabola</b> (quadratic function): d = 0.4 t².")},
+];
+W.runner=o=>el=>{
+  const build=o.mode==="build";
+  let cur=0,segs=build?[]:RUN_SCEN[0].segs,raf=null,t=0,playing=false;
+  const SEGS={fwd:{v0:4,d:5,n:B("Avancer","Forward")},stop:{v0:0,d:5,n:B("Arrêt","Stop")},back:{v0:-4,d:5,n:B("Revenir","Back")},acc:{v0:0,a:0.8,d:5,n:B("Accélérer","Speed up")}};
+  const endV=()=>{const sim=simulate(segs);return segs.length?sim.vel(sim.T):0};
+  const render=()=>{
+    if(raf)cancelAnimationFrame(raf);
+    const sim=simulate(segs);
+    let pmin=0,pmax=10,vmax=4;for(let i=0;i<=200;i++){const tt=sim.T*i/200;pmin=Math.min(pmin,sim.pos(tt));pmax=Math.max(pmax,sim.pos(tt));vmax=Math.max(vmax,Math.abs(sim.vel(tt)))}
+    const ys=niceStep(pmax-pmin,6), ylo=Math.floor(pmin/ys)*ys, yhi=Math.ceil(pmax/ys)*ys||ys;
+    const T=segs.length?sim.T:10, xs=niceStep(T,6);
+    const vs=niceStep(2*vmax,6), vhi=Math.ceil((vmax+0.5)/vs)*vs;
+    const Pd=Plot({xmin:0,xmax:T,ymin:ylo,ymax:yhi,w:320,h:210,xgrid:xs,ygrid:ys,pad:{l:38},xtitle:B("temps (s)","time (s)"),ytitle:B("position (m)","position (m)")});
+    const Pv=Plot({xmin:0,xmax:T,ymin:-vhi,ymax:vhi,w:320,h:210,xgrid:xs,ygrid:vs,pad:{l:38},xtitle:B("temps (s)","time (s)"),ytitle:B("vitesse (m/s)","speed (m/s)")});
+    const span=Math.max(yhi-ylo,10), tx0=30, tx1=330, mx=p=>tx0+(p-ylo)/span*(tx1-tx0);
+    let ticks="";for(let p=ylo;p<=yhi+1e-9;p+=ys)ticks+=`<line x1="${mx(p)}" y1="62" x2="${mx(p)}" y2="67" style="stroke:var(--ink-2)"/><text x="${mx(p)}" y="79" font-size="10" text-anchor="middle" style="fill:var(--ink-2)">${nf(p)} m</text>`;
+    const top=build?`<div class="tabs">${Object.entries(SEGS).map(([k,s])=>`<button class="btn sm" data-seg="${k}" ${segs.length>=6||(k==="acc"&&Math.max(0,endV())>=8)?"disabled":""}>+ ${tx(s.n)} (5 s)</button>`).join("")}</div><div class="seglist">${segs.length?segs.map(s=>`<span>${tx(s.n)}</span>`).join(""):`<span style="border-style:dashed;color:var(--ink-2)">${tx(B("Choisis des étapes pour ton coureur","Pick steps for your runner"))}</span>`}</div>${segs.length?`<div style="text-align:center"><button class="btn sm ghost" data-clear="1">${tx(B("Effacer les étapes","Clear the steps"))}</button></div>`:""}`
+      :`<div class="tabs">${RUN_SCEN.map((s,i)=>`<button class="btn sm ${i===cur?"on":""}" data-i="${i}">${tx(s.n)}</button>`).join("")}</div>`;
+    el.innerHTML=`${top}
+      <svg class="track" viewBox="0 0 360 84"><line x1="20" y1="62" x2="345" y2="62" style="stroke:var(--ink)" stroke-width="2"/>${ticks}
+        <line x1="${mx(0)}" y1="30" x2="${mx(0)}" y2="62" style="stroke:var(--green)" stroke-width="2"/><path d="M${mx(0)} 30 l14 5 l-14 5z" style="fill:var(--green)"/>
+        <g class="runner"><circle cx="0" cy="19" r="5.5" style="fill:var(--c2)"/><g style="stroke:var(--c2)" stroke-width="3" stroke-linecap="round" fill="none"><path d="M0 25 L0 42"/><path class="arms" d="M0 30 L-7 37 M0 30 L8 34"/><path class="legs" d="M0 42 L-6 58 M0 42 L7 57"/></g></g></svg>
+      <div class="readout"></div>
+      <div class="pair two"><div>${Pd.svg(`<g class="dyn"></g>`)}</div><div>${Pv.svg(`<g class="dyn"></g>`)}</div></div>
+      <div style="text-align:center"><button class="btn primary" data-play="1" ${segs.length?"":"disabled"}>${tx(B("Lancer","Play"))}</button></div>
+      ${build?`<p class="hint">${tx(B("S'il revient plus loin que le départ, sa position devient négative : il est derrière la ligne de départ.","If he comes back past the start, his position becomes negative: he is behind the start line."))}</p>`:`<p>${tx(RUN_SCEN[cur].t)}</p>`}`;
+    const [sd,sv]=el.querySelectorAll(".pair svg"), dd=sd.querySelector(".dyn"), dv=sv.querySelector(".dyn"), rn=el.querySelector(".runner"), ro=el.querySelector(".readout"), legs=el.querySelector(".legs"), arms=el.querySelector(".arms");
+    const frame=tt=>{
+      let pts=[];const n=Math.max(2,Math.ceil(tt/T*160));for(let i=0;i<=n;i++){const u=tt*i/n;pts.push([u,sim.pos(u)])}
+      dd.innerHTML=segs.length?Pd.poly(pts,{color:"var(--c1)"})+Pd.dot(tt,sim.pos(tt),{color:"var(--c1)",r:5}):"";
+      let vh="";for(const s of sim.S){if(s.t0>tt)break;const e=Math.min(s.t0+s.d,tt);vh+=Pv.seg(s.t0,s.v0,e,s.v0+s.a*(e-s.t0),{color:"var(--c2)"})}
+      dv.innerHTML=segs.length?vh+Pv.dot(tt,sim.vel(tt),{color:"var(--c2)",r:5}):"";
+      const p=sim.pos(tt),v=sim.vel(tt),dir=v<0?-1:1;
+      rn.setAttribute("transform",`translate(${mx(p)},0) scale(${dir},1)`);
+      const sw=Math.abs(v)>0.01?Math.sin(p*1.6):0;
+      legs.setAttribute("d",`M0 42 L${-6*sw-1} 58 M0 42 L${6*sw+1} 57`); arms.setAttribute("d",`M0 30 L${7*sw-1} 37 M0 30 L${-7*sw+1} 34`);
+      ro.innerHTML=segs.length?`t = ${nf(round(tt,1))} s &nbsp;&nbsp;&nbsp; ${tx(B("position","position"))} = ${nf(round(p,1))} m &nbsp;&nbsp;&nbsp; <span style="color:var(--c2)">${tx(B("vitesse","speed"))} = ${nf(round(v,1))} m/s</span>`:"";
+    };
+    const play=()=>{if(!segs.length)return;let t0=null;playing=true;
+      const step=ts=>{if(!el.isConnected){playing=false;return}if(t0==null)t0=ts;t=Math.min(T,(ts-t0)/1000*3.2);frame(t);if(t<T)raf=requestAnimationFrame(step);else playing=false};
+      raf=requestAnimationFrame(step)};
+    el.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;segs=RUN_SCEN[cur].segs;render();play()});
+    el.querySelectorAll("[data-seg]").forEach(b=>b.onclick=()=>{const k=b.dataset.seg;const s={...SEGS[k]};if(k==="acc")s.v0=Math.max(0,endV());segs=[...segs,s];render();frame(simulate(segs).T)});
+    const cl=el.querySelector("[data-clear]");if(cl)cl.onclick=()=>{segs=[];render()};
+    el.querySelector("[data-play]").onclick=play;
+    frame(build?(segs.length?sim.T:0):0);
+  };
+  render();
+  if(!build) setTimeout(()=>{const b=el.querySelector("[data-play]");if(b&&el.isConnected)b.click()},400);
+};
+/* =====================================================================
+   LESSONS
+   Item types: info, mcq, tf, num, order, match, buckets, labels, tap,
+   plotpoints, table, axes, numline, build
+   ===================================================================== */
+const info=(title,html,o={})=>({t:"info",title,html,...o});
+const mcq=(q,choices,ex,o={})=>({t:"mcq",q,choices,a:0,ex,...o});
+const tf=(q,truth,ex,o={})=>({t:"mcq",q,choices:[B("Vrai","True"),B("Faux","False")],a:truth?0:1,ex,tf:true,noshuffle:true,...o});
+const num=(q,a,ex,o={})=>({t:"input",q,a,ex,tol:o.tol??0.001,...o});
+const order=(q,pieces,ex,o={})=>({t:"order",q,pieces,ex,...o});
+const match=(q,pairs,o={})=>({t:"match",q,pairs,...o});
+const buckets=(q,cats,items,ex,o={})=>({t:"buckets",q,cats,items,ex,...o});
+const build=(q,tiles,answer,ex,o={})=>({t:"build",q,tiles,answer,ex,...o});
+const fig=(o,draw)=>()=>{const P=Plot(o);return P.svg(draw(P))};
+
+const L={};
+
+/* ---------- 1. Le repère ---------- */
+L.repere={title:B("Le repère","The coordinate grid"),glyph:"xy",build:()=>[
+  info(B("Le repère","The coordinate grid (le repère)"),()=>{const P=Plot({xmin:-3,xmax:5,ymin:-2,ymax:5,w:340,h:280,xtitle:"x",ytitle:"y"});
+    return P.svg(P.seg(2,0,2,3,{color:"var(--c2)",w:1.6,dash:"5 4"})+P.seg(0,3,2,3,{color:"var(--c3)",w:1.6,dash:"5 4"})+P.dot(2,3,{label:"A(2 ; 3)",color:"var(--c1)"})+P.dot(0,0,{r:4,color:"var(--ink)",label:"O",dx:-16,dy:16}))+
+    tx(B(`<p>Un <b>repère</b>, ce sont deux axes gradués qui se coupent en un point O, l'<b>origine</b>.</p>
+      <p>L'axe horizontal (→) est l'<b>axe des abscisses</b> : on y lit les <b>x</b>.<br>L'axe vertical (↑) est l'<b>axe des ordonnées</b> : on y lit les <b>y</b>.</p>
+      <p>Le point A(2 ; 3) a pour <b>abscisse</b> 2 et pour <b>ordonnée</b> 3. On donne <b>toujours x d'abord</b>, puis y, séparés par un point-virgule.</p>
+      <div class="ex">Astuce : abscisse = « à plat » (horizontal), ordonnée = « debout » (vertical).</div>`,
+      `<p>A <b>coordinate grid</b> (<span class="fr-term">repère</span>) is two graduated axes crossing at a point O, the <b>origin</b> (<span class="fr-term">origine</span>).</p>
+      <p>The horizontal axis (→) is the <b>x-axis</b> (<span class="fr-term">axe des abscisses</span>).<br>The vertical axis (↑) is the <b>y-axis</b> (<span class="fr-term">axe des ordonnées</span>).</p>
+      <p>Point A(2 ; 3) has <b>x-coordinate</b> 2 (<span class="fr-term">abscisse</span>) and <b>y-coordinate</b> 3 (<span class="fr-term">ordonnée</span>). We <b>always give x first</b>, then y. In France they are separated by a semicolon.</p>
+      <div class="ex">Tip: <i>abscisse</i> lies flat (horizontal), <i>ordonnée</i> stands up (vertical).</div>`))}),
+  {t:"labels",q:B("Fais glisser chaque étiquette à sa place.","Drag each label to the right place."),
+    plot:{xmin:-3,xmax:5,ymin:-2,ymax:5,w:340,h:290},draw:P=>P.seg(2,0,2,3,{color:"var(--c2)",w:1.6,dash:"5 4"})+P.seg(0,3,2,3,{color:"var(--c3)",w:1.6,dash:"5 4"})+P.dot(2,3,{label:"A",color:"var(--c1)"}),
+    zones:[{x:3.6,y:0.75,k:"xa"},{x:1.25,y:4.6,k:"ya"},{x:-1.1,y:-0.85,k:"o"},{x:2,y:-0.9,k:"ab"},{x:-1.6,y:3,k:"or"}],
+    chips:[{k:"xa",l:B("axe des abscisses","x-axis")},{k:"ya",l:B("axe des ordonnées","y-axis")},{k:"o",l:B("origine","origin")},{k:"ab",l:B("abscisse de A","x of A")},{k:"or",l:B("ordonnée de A","y of A")}],
+    ex:B("Abscisses : l'axe horizontal. Ordonnées : l'axe vertical. Ils se coupent à l'origine.","x-axis (abscisses): horizontal. y-axis (ordonnées): vertical. They cross at the origin.")},
+  {t:"tap",q:B("Place le point B(−2 ; 3).","Place the point B(−2 ; 3)."),plot:{xmin:-5,xmax:5,ymin:-4,ymax:5,w:340,h:300},targets:[[-2,3]],snap:[1,1],
+    ex:B("Abscisse −2 : 2 carreaux vers la gauche. Ordonnée 3 : 3 carreaux vers le haut.","x = −2: 2 squares to the left. y = 3: 3 squares up.")},
+  {t:"tap",q:B("Place le point C(4 ; −1).","Place the point C(4 ; −1)."),plot:{xmin:-5,xmax:5,ymin:-4,ymax:5,w:340,h:300},targets:[[4,-1]],snap:[1,1],
+    ex:B("D'abord x = 4 (vers la droite), puis y = −1 (vers le bas).","First x = 4 (to the right), then y = −1 (down).")},
+  mcq(B("Quelles sont les coordonnées du point D ?","What are the coordinates of point D?"),["(−3 ; 1)","(1 ; −3)","(3 ; 1)"],B("On lit d'abord l'abscisse (−3), puis l'ordonnée (1).","Read the x-coordinate first (−3), then the y-coordinate (1)."),{fig:fig({xmin:-5,xmax:5,ymin:-3,ymax:4,w:320,h:240},P=>P.dot(-3,1,{label:"D"}))}),
+  mcq(B("Dans le point E(5 ; −2), le nombre −2 est…","In point E(5 ; −2), the number −2 is…"),[B("l'ordonnée de E","the y-coordinate of E (ordonnée)"),B("l'abscisse de E","the x-coordinate of E (abscisse)"),B("l'origine","the origin")],B("Le deuxième nombre est l'ordonnée.","The second number is the y-coordinate (ordonnée).")),
+  match(B("Associe le mot français à sa traduction.","Match each French word with its English meaning."),[["axe des abscisses","x-axis"],["axe des ordonnées","y-axis"],["origine","origin"],["abscisse","x-coordinate"],["ordonnée","y-coordinate"],["graduation","tick mark (scale)"]]),
+]};
+
+/* ---------- 2. Image et antécédent ---------- */
+L.image={title:B("Image et antécédent","Image and antécédent"),glyph:"f(x)",build:()=>[
+  info(B("Une fonction, c'est une machine","A function is a machine"),B(`<p>On met un nombre <b>x</b> dans la machine : c'est l'<b>antécédent</b> (l'entrée).<br>La machine donne <b>un seul</b> nombre <b>f(x)</b> : c'est l'<b>image</b> (la sortie).</p><p>On écrit <b>f : x ⟼ 2x + 3</b> ou <b>f(x) = 2x + 3</b>. « f(4) » se lit « f de 4 ».</p>`,
+    `<p>You put a number <b>x</b> into the machine: it is the <b>antécédent</b> (pre-image, the input).<br>The machine gives back <b>exactly one</b> number <b>f(x)</b>: it is the <b>image</b> (the output).</p><p>We write <b>f : x ⟼ 2x + 3</b> or <b>f(x) = 2x + 3</b>. “f(4)” is read “f of 4” (<span class="fr-term">f de 4</span>).</p>`),{widget:W.machine()}),
+  info(B("Ne plus jamais confondre","Never mix them up again"),B(`<div class="tw"><table><tr><th></th><th>Antécédent</th><th>Image</th></tr>
+    <tr><td>C'est…</td><td>l'entrée</td><td>la sortie</td></tr><tr><td>Lettre</td><td>x</td><td>f(x) (ou y)</td></tr>
+    <tr><td>Sur le graphique</td><td>axe des abscisses (horizontal)</td><td>axe des ordonnées (vertical)</td></tr>
+    <tr><td>Combien ?</td><td>un nombre peut en avoir 0, 1, 2 ou plus</td><td>toujours <b>une seule</b></td></tr></table></div>
+    <div class="ex">f(3) = 9 se lit dans les deux sens :<br><b>9 est l'image de 3</b> &nbsp;et&nbsp; <b>3 est un antécédent de 9</b>.</div>
+    <div class="warn">On dit « <b>l'</b>image » (il n'y en a qu'une) mais « <b>un</b> antécédent » (il peut y en avoir plusieurs).</div>`,
+    `<div class="tw"><table><tr><th></th><th>Antécédent (pre-image)</th><th>Image</th></tr>
+    <tr><td>It is…</td><td>the input</td><td>the output</td></tr><tr><td>Letter</td><td>x</td><td>f(x) (or y)</td></tr>
+    <tr><td>On the graph</td><td>x-axis (abscisses, horizontal)</td><td>y-axis (ordonnées, vertical)</td></tr>
+    <tr><td>How many?</td><td>a number can have 0, 1, 2 or more</td><td>always <b>exactly one</b></td></tr></table></div>
+    <div class="ex">f(3) = 9 can be read both ways:<br><b>9 is the image of 3</b> and <b>3 is an antécédent of 9</b>.</div>
+    <div class="warn">In French: “<b>l'</b>image” (there is only one) but “<b>un</b> antécédent” (there can be several).</div>`)),
+  buckets(B("On sait que f(4) = 11 et g(−2) = 4. Range chaque étiquette.","We know f(4) = 11 and g(−2) = 4. Sort each label."),[{id:"a",l:B("Antécédent (entrée)","Antécédent (input)")},{id:"i",l:B("Image (sortie)","Image (output)")}],
+    [{h:B("4 dans f(4) = 11","4 in f(4) = 11"),c:"a"},{h:B("11 dans f(4) = 11","11 in f(4) = 11"),c:"i"},{h:B("−2 dans g(−2) = 4","−2 in g(−2) = 4"),c:"a"},{h:B("4 dans g(−2) = 4","4 in g(−2) = 4"),c:"i"},{h:"x",c:"a"},{h:"f(x)",c:"i"},{h:B("se lit sur l'axe des abscisses","read on the x-axis"),c:"a"},{h:B("se lit sur l'axe des ordonnées","read on the y-axis"),c:"i"}],
+    B("L'antécédent est ce qu'on met dans la parenthèse. L'image est le résultat.","The antécédent is what goes inside the brackets. The image is the result.")),
+  mcq(B("Par la fonction f, l'image de 3 est 9. On écrit :","For the function f, the image of 3 is 9. We write:"),["f(3) = 9","f(9) = 3","3 = f(9)"],B("L'antécédent 3 va dans la parenthèse, l'image 9 après le signe =.","The antécédent 3 goes in the brackets, the image 9 after the = sign.")),
+  mcq(B("f(5) = 13. Complète : « 5 est … de 13 ».","f(5) = 13. Complete: “5 is … of 13”."),[B("un antécédent","an antécédent"),B("l'image","the image")],B("5 est l'entrée : c'est un antécédent de 13.","5 is the input: it is an antécédent of 13.")),
+  mcq(B("f(5) = 13. Complète : « 13 est … de 5 ».","f(5) = 13. Complete: “13 is … of 5”."),[B("l'image","the image"),B("un antécédent","an antécédent")],B("13 est la sortie : c'est l'image de 5.","13 is the output: it is the image of 5.")),
+  mcq(B("« Par la fonction g, 20 a pour image 440,5 » veut dire :","“For the function g, 20 has image 440.5” means:"),["g(20) = 440,5","g(440,5) = 20"],B("20 est l'antécédent, il va dans la parenthèse.","20 is the antécédent, it goes in the brackets.")),
+  num(B("f(x) = 2x + 3. Calcule l'image de 4.","f(x) = 2x + 3. Calculate the image of 4."),11,B("f(4) = 2 × 4 + 3 = 8 + 3 = 11.","f(4) = 2 × 4 + 3 = 8 + 3 = 11.")),
+  num(B("f(x) = 2x + 3. Trouve l'antécédent de 15 (résous 2x + 3 = 15).","f(x) = 2x + 3. Find the antécédent of 15 (solve 2x + 3 = 15)."),6,B("2x + 3 = 15, donc 2x = 12, donc x = 6. Vérification : f(6) = 15.","2x + 3 = 15, so 2x = 12, so x = 6. Check: f(6) = 15.")),
+  mcq(B("g(x) = x². Quels sont les antécédents de 16 ?","g(x) = x². What are the antécédents of 16?"),[B("4 et −4","4 and −4"),B("seulement 4","only 4"),"256"],B("4² = 16 et (−4)² = 16 : deux antécédents. (256 est l'image de 16, pas un antécédent.)","4² = 16 and (−4)² = 16: two antécédents. (256 is the image of 16, not an antécédent.)")),
+  tf(B("Par une fonction, un nombre peut avoir deux images différentes.","For a function, a number can have two different images."),false,B("Jamais : chaque x a une seule image. Ce sont les antécédents qui peuvent être plusieurs.","Never: each x has exactly one image. It's the antécédents that can be several.")),
+  build(B("Écris en symboles : « l'image de 2 par f est 7 ».","Write with symbols: “the image of 2 by f is 7”."),["f","(","2",")","=","7","x","f"],["f","(","2",")","=","7"],B("f(2) = 7.","f(2) = 7.")),
+]};
+
+/* ---------- 3. Lire un graphique ---------- */
+const PAR={xmin:-5,xmax:5,ymin:-3,ymax:7,w:340,h:320,xtitle:"x",ytitle:"y"}, fpar=x=>0.5*x*x-2;
+L.lire={title:B("Lire un graphique","Reading a graph"),glyph:"↗",build:()=>[
+  info(B("Lire une image","Reading an image"),B(`<p>Pour lire l'image de a : pars de <b>a sur l'axe des abscisses</b>, monte ou descends jusqu'à la courbe, puis va horizontalement jusqu'à l'<b>axe des ordonnées</b>.</p>`,`<p>To read the image of a: start from <b>a on the x-axis</b> (abscisses), go up or down to the curve, then go across to the <b>y-axis</b> (ordonnées).</p>`),{widget:W.trace({plot:PAR,f:fpar,from:-4,to:4,start:2})}),
+  info(B("Lire des antécédents","Reading antécédents"),B(`<p>Pour lire les antécédents de k : pars de <b>k sur l'axe des ordonnées</b>, va horizontalement jusqu'à la courbe (parfois plusieurs fois !), puis descends sur l'<b>axe des abscisses</b>.</p>`,`<p>To read the antécédents of k: start from <b>k on the y-axis</b> (ordonnées), go across to the curve (sometimes several times!), then go down to the <b>x-axis</b> (abscisses).</p>`),{widget:W.hline({plot:PAR,f:fpar,from:-4,to:4,k0:2})}),
+  num(B("Voici la courbe de f. Lis f(4).","Here is the graph of f. Read f(4)."),6,B("Au-dessus de x = 4, la courbe est à la hauteur 6.","Above x = 4, the curve is at height 6."),{fig:fig(PAR,P=>P.curve(fpar,{from:-4,to:4}))}),
+  num(B("Lis f(0) sur le graphique.","Read f(0) on the graph."),-2,B("La courbe coupe l'axe des ordonnées en −2.","The curve crosses the y-axis at −2."),{fig:fig(PAR,P=>P.curve(fpar,{from:-4,to:4}))}),
+  {t:"tap",q:B("Touche les points de la courbe qui ont pour ordonnée 6.","Tap the points of the curve whose y-coordinate is 6."),plot:PAR,draw:P=>P.curve(fpar,{from:-4,to:4}),targets:[[-4,6],[4,6]],snap:[0.5,0.5],ex:B("La ligne horizontale y = 6 touche la courbe en x = −4 et x = 4.","The horizontal line y = 6 meets the curve at x = −4 and x = 4.")},
+  mcq(B("Quels sont les antécédents de 6 par f ?","What are the antécédents of 6 for f?"),[B("−4 et 4","−4 and 4"),"6","16"],B("On lit les abscisses des deux points trouvés.","Read the x-coordinates of the two points you found."),{fig:fig(PAR,P=>P.curve(fpar,{from:-4,to:4})+P.seg(-5,6,5,6,{color:"var(--c3)",w:1.6,dash:"5 4"}))}),
+  mcq(B("Combien d'antécédents a −3 par f ?","How many antécédents does −3 have for f?"),[B("aucun","none"),B("un","one"),B("deux","two")],B("La courbe ne descend jamais sous −2 : la ligne y = −3 ne la touche pas.","The curve never goes below −2: the line y = −3 doesn't touch it."),{fig:fig(PAR,P=>P.curve(fpar,{from:-4,to:4}))}),
+  num(B("Voici la droite de g. Lis l'image de −2.","Here is the line of g. Read the image of −2."),3,B("Au-dessus de x = −2, la droite est à la hauteur 3 : g(−2) = 3.","Above x = −2, the line is at height 3: g(−2) = 3."),{fig:fig(PAR,P=>P.curve(x=>-x+1,{color:"var(--c2)"}))}),
+  mcq(B("Sur un graphique, l'image f(x) se lit sur…","On a graph, the image f(x) is read on…"),[B("l'axe des ordonnées (vertical)","the y-axis (vertical)"),B("l'axe des abscisses (horizontal)","the x-axis (horizontal)")],B("Image = sortie = y = axe vertical.","Image = output = y = vertical axis.")),
+]};
+
+/* ---------- 4. f(0) ou zéro ---------- */
+const ZP={xmin:-3,xmax:5,ymin:-5,ymax:6,w:340,h:320,xtitle:"x",ytitle:"y"}, fz=x=>x*x-2*x-3;
+L.zero={title:B("f(0) ou zéro ?","f(0) or zero?"),glyph:"0",build:()=>[
+  info(B("Deux choses très différentes","Two very different things"),()=>{const P=Plot(ZP);return P.svg(P.curve(fz,{from:-2.2,to:4.2})+P.dot(0,-3,{color:"var(--c3)",r:7,label:"(0 ; f(0))",dx:10,dy:4})+P.dot(-1,0,{color:"var(--c2)",r:7})+P.dot(3,0,{color:"var(--c2)",r:7}))+tx(B(
+    `<p><span style="color:var(--c3)"><b>f(0)</b></span> est l'<b>image de 0</b>. On remplace x par 0. Sur le graphique : là où la courbe coupe l'<b>axe des ordonnées</b> (vertical). Ici f(0) = −3.</p>
+     <p><span style="color:var(--c2)">Un <b>zéro</b> de f</span> est une valeur de x telle que <b>f(x) = 0</b>. On résout f(x) = 0. Sur le graphique : là où la courbe coupe l'<b>axe des abscisses</b> (horizontal). Ici les zéros sont −1 et 3.</p>
+     <div class="ex">f(0) : on <b>connaît</b> x (c'est 0), on cherche y.<br>Zéro : on <b>connaît</b> y (c'est 0), on cherche x.</div>`,
+    `<p><span style="color:var(--c3)"><b>f(0)</b></span> is the <b>image of 0</b>. Replace x with 0. On the graph: where the curve crosses the <b>y-axis</b> (ordonnées, vertical). Here f(0) = −3.</p>
+     <p><span style="color:var(--c2)">A <b>zero</b> of f</span> (<span class="fr-term">un zéro</span>) is a value of x such that <b>f(x) = 0</b>. Solve f(x) = 0. On the graph: where the curve crosses the <b>x-axis</b> (abscisses, horizontal). Here the zeros are −1 and 3.</p>
+     <div class="ex">f(0): we <b>know</b> x (it's 0), we look for y.<br>Zero: we <b>know</b> y (it's 0), we look for x.</div>`))}),
+  {t:"tap",q:B("Touche le point du graphique qui montre f(0).","Tap the point of the graph that shows f(0)."),plot:ZP,draw:P=>P.curve(fz,{from:-2.2,to:4.2}),targets:[[0,-3]],snap:[0.5,0.5],ex:B("f(0) : là où la courbe coupe l'axe des ordonnées, en (0 ; −3).","f(0): where the curve crosses the y-axis, at (0 ; −3).")},
+  {t:"tap",q:B("Touche les points qui montrent les zéros de f.","Tap the points that show the zeros of f."),plot:ZP,draw:P=>P.curve(fz,{from:-2.2,to:4.2}),targets:[[-1,0],[3,0]],snap:[0.5,0.5],ex:B("Les zéros : là où la courbe coupe l'axe des abscisses, en x = −1 et x = 3.","Zeros: where the curve crosses the x-axis, at x = −1 and x = 3.")},
+  mcq(B("D'après ce graphique, f(0) = ?","From this graph, f(0) = ?"),["−3",B("−1 et 3","−1 and 3"),"0"],B("On lit sur l'axe des ordonnées : −3.","Read on the y-axis: −3."),{fig:fig(ZP,P=>P.curve(fz,{from:-2.2,to:4.2}))}),
+  mcq(B("D'après ce graphique, les zéros de f sont…","From this graph, the zeros of f are…"),[B("−1 et 3","−1 and 3"),"−3",B("0 et −3","0 and −3")],B("On lit sur l'axe des abscisses : −1 et 3.","Read on the x-axis: −1 and 3."),{fig:fig(ZP,P=>P.curve(fz,{from:-2.2,to:4.2}))}),
+  num(B("h(x) = 2x − 6. Calcule h(0).","h(x) = 2x − 6. Calculate h(0)."),-6,B("h(0) = 2 × 0 − 6 = −6.","h(0) = 2 × 0 − 6 = −6.")),
+  num(B("h(x) = 2x − 6. Trouve le zéro de h (résous 2x − 6 = 0).","h(x) = 2x − 6. Find the zero of h (solve 2x − 6 = 0)."),3,B("2x − 6 = 0, donc 2x = 6, donc x = 3.","2x − 6 = 0, so 2x = 6, so x = 3.")),
+  buckets(B("Range chaque étiquette.","Sort each label."),[{id:"f",l:B("On cherche f(0)","Looking for f(0)")},{id:"z",l:B("On cherche un zéro","Looking for a zero")}],
+    [{h:B("on remplace x par 0","replace x with 0"),c:"f"},{h:B("on résout f(x) = 0","solve f(x) = 0"),c:"z"},{h:B("la courbe coupe l'axe des ordonnées","the curve crosses the y-axis"),c:"f"},{h:B("la courbe coupe l'axe des abscisses","the curve crosses the x-axis"),c:"z"},{h:B("la réponse est un y","the answer is a y"),c:"f"},{h:B("la réponse est un x","the answer is an x"),c:"z"}],
+    B("f(0) : x = 0 connu, on cherche y. Zéro : y = 0 connu, on cherche x.","f(0): x = 0 known, look for y. Zero: y = 0 known, look for x.")),
+  mcq(B("Voici f(x) = 2ˣ. Combien de zéros a-t-elle ?","Here is f(x) = 2ˣ. How many zeros does it have?"),[B("aucun","none"),B("un","one"),B("deux","two")],B("La courbe ne touche jamais l'axe des abscisses. Mais f(0) existe : f(0) = 1.","The curve never touches the x-axis. But f(0) exists: f(0) = 1."),{fig:fig({xmin:-4,xmax:3,ymin:-1,ymax:7,w:320,h:260},P=>P.curve(x=>2**x))}),
+  tf(B("Le zéro d'une fonction et f(0), c'est la même chose.","The zero of a function and f(0) are the same thing."),false,B("Non : f(0) est une image (un y), un zéro est un antécédent de 0 (un x).","No: f(0) is an image (a y), a zero is an antécédent of 0 (an x).")),
+]};
+
+/* ---------- 5. Ensemble de définition et intervalles ---------- */
+const nl=(l,r,cl,cr)=>{const P=Plot({xmin:-6,xmax:6,ymin:-1,ymax:1,w:320,h:56,labels:false,grid:false,pad:{l:10,r:10,t:10,b:10}});
+  const x1=l==null?-6:l,x2=r==null?6:r;
+  return `<svg class="plot" viewBox="0 0 320 56" style="max-width:300px;margin:2px 0"><line x1="10" y1="28" x2="310" y2="28" style="stroke:var(--ink)" stroke-width="1.5"/>${[-5,-4,-3,-2,-1,0,1,2,3,4,5].map(v=>`<line x1="${P.sx(v)}" y1="24" x2="${P.sx(v)}" y2="32" style="stroke:var(--ink-2)"/><text x="${P.sx(v)}" y="48" font-size="11" text-anchor="middle" style="fill:var(--ink-2)">${nf(v)}</text>`).join("")}<line x1="${P.sx(x1)}" y1="28" x2="${P.sx(x2)}" y2="28" style="stroke:var(--c1)" stroke-width="6" stroke-linecap="butt"/>${l!=null?`<text x="${P.sx(l)}" y="20" font-size="22" font-weight="800" text-anchor="middle" style="fill:var(--c1)">${cl?"[":"]"}</text>`:""}${r!=null?`<text x="${P.sx(r)}" y="20" font-size="22" font-weight="800" text-anchor="middle" style="fill:var(--c1)">${cr?"]":"["}</text>`:""}</svg>`};
+L.domaine={title:B("Domaine et intervalles","Domain and intervals"),glyph:"[ ]",build:()=>[
+  info(B("L'ensemble de définition","The domain (ensemble de définition)"),B(`<p>L'<b>ensemble de définition</b> d'une fonction f, noté <b>D<sub>f</sub></b>, c'est l'ensemble de toutes les valeurs de x que l'on a <b>le droit</b> de mettre dans la fonction.</p>
+    <div class="ex">Une feuille carrée de 21 cm : la longueur x est entre 0 et 21. D = [0 ; 21].</div>
+    <div class="ex">Un temps ne peut pas être négatif : t ≥ 0. D = [0 ; +∞[.</div>
+    <div class="ex">Une courbe dessinée de x = −4 à x = 5 : D = [−4 ; 5]. On lit le domaine sur l'<b>axe des abscisses</b>.</div>`,
+    `<p>The <b>domain</b> of a function f (<span class="fr-term">ensemble de définition</span>, written <b>D<sub>f</sub></b>) is the set of all values of x we are <b>allowed</b> to put into the function.</p>
+    <div class="ex">A square sheet of 21 cm: the length x is between 0 and 21. D = [0 ; 21].</div>
+    <div class="ex">A time can't be negative: t ≥ 0. D = [0 ; +∞[.</div>
+    <div class="ex">A curve drawn from x = −4 to x = 5: D = [−4 ; 5]. The domain is read on the <b>x-axis</b> (abscisses).</div>`)),
+  info(B("Écrire un intervalle","Writing an interval"),()=>tx(B(`<div class="tw"><table><tr><th>Inégalité</th><th>Intervalle</th><th>Dessin</th></tr>
+    <tr><td>−2 ≤ x ≤ 3</td><td><b>[−2 ; 3]</b></td><td>${nl(-2,3,1,1)}</td></tr>
+    <tr><td>−2 &lt; x &lt; 3</td><td><b>]−2 ; 3[</b></td><td>${nl(-2,3,0,0)}</td></tr>
+    <tr><td>−2 ≤ x &lt; 3</td><td><b>[−2 ; 3[</b></td><td>${nl(-2,3,1,0)}</td></tr>
+    <tr><td>x ≥ 1</td><td><b>[1 ; +∞[</b></td><td>${nl(1,null,1)}</td></tr>
+    <tr><td>x &lt; 1</td><td><b>]−∞ ; 1[</b></td><td>${nl(null,1,0,0)}</td></tr></table></div>
+    <p>Crochet <b>tourné vers le nombre</b> : il est <b>inclus</b> (≤ ou ≥).<br>Crochet <b>tourné vers l'extérieur</b> : il est <b>exclu</b> (&lt; ou &gt;).</p>
+    <div class="warn">Règles : le plus petit nombre d'abord, un point-virgule au milieu, et toujours un crochet ouvert du côté de ∞.</div>`,
+    `<div class="tw"><table><tr><th>Inequality</th><th>Interval</th><th>Picture</th></tr>
+    <tr><td>−2 ≤ x ≤ 3</td><td><b>[−2 ; 3]</b></td><td>${nl(-2,3,1,1)}</td></tr>
+    <tr><td>−2 &lt; x &lt; 3</td><td><b>]−2 ; 3[</b></td><td>${nl(-2,3,0,0)}</td></tr>
+    <tr><td>−2 ≤ x &lt; 3</td><td><b>[−2 ; 3[</b></td><td>${nl(-2,3,1,0)}</td></tr>
+    <tr><td>x ≥ 1</td><td><b>[1 ; +∞[</b></td><td>${nl(1,null,1)}</td></tr>
+    <tr><td>x &lt; 1</td><td><b>]−∞ ; 1[</b></td><td>${nl(null,1,0,0)}</td></tr></table></div>
+    <p>Bracket <b>facing the number</b>: it is <b>included</b> (≤ or ≥).<br>Bracket <b>facing outwards</b>: it is <b>excluded</b> (&lt; or &gt;).</p>
+    <div class="warn">French rules (different from English books!): smaller number first, a semicolon in the middle, reversed brackets ]a ; b[ for “excluded” instead of (a, b), and always an open bracket next to ∞.</div>`))),
+  {t:"numline",q:B("Construis l'intervalle : −2 ≤ x ≤ 3","Build the interval: −2 ≤ x ≤ 3"),target:{a:-2,ac:true,b:3,bc:true},ex:B("−2 et 3 sont inclus (≤) : [−2 ; 3].","−2 and 3 are included (≤): [−2 ; 3].")},
+  {t:"numline",q:B("Construis l'intervalle : −1 < x ≤ 4","Build the interval: −1 < x ≤ 4"),target:{a:-1,ac:false,b:4,bc:true},ex:B("−1 est exclu (<), 4 est inclus (≤) : ]−1 ; 4].","−1 is excluded (<), 4 is included (≤): ]−1 ; 4].")},
+  {t:"numline",q:B("Construis l'intervalle : x ≥ 2","Build the interval: x ≥ 2"),target:{a:2,ac:true,b:Infinity,bc:false},ex:B("De 2 inclus jusqu'à l'infini : [2 ; +∞[.","From 2 included to infinity: [2 ; +∞[.")},
+  {t:"numline",q:B("Construis l'intervalle : x < 0","Build the interval: x < 0"),target:{a:-Infinity,ac:false,b:0,bc:false},ex:B("Depuis −∞ jusqu'à 0 exclu : ]−∞ ; 0[.","From −∞ up to 0 excluded: ]−∞ ; 0[.")},
+  build(B("Écris l'intervalle : 1 ≤ x < 5","Write the interval: 1 ≤ x < 5"),["[","]","1","5",";","[","]"],["[","1",";","5","["],B("1 inclus : [1 … ; 5 exclu : … 5[. Donc [1 ; 5[.","1 included: [1 … ; 5 excluded: … 5[. So [1 ; 5[."),{mono:true}),
+  mcq(B("Quel est l'ensemble de définition de cette fonction ?","What is the domain of this function?"),["[−3 ; 4]","[1 ; 5]","]−3 ; 4["],B("La courbe va de x = −3 à x = 4, extrémités comprises (points pleins). On lit sur l'axe des abscisses, pas des ordonnées.","The curve goes from x = −3 to x = 4, ends included (filled dots). Read it on the x-axis, not the y-axis."),{fig:fig({xmin:-5,xmax:5,ymin:-1,ymax:6,w:320,h:240,xtitle:"x",ytitle:"y"},P=>P.curve(x=>3+2*Math.sin(x*0.9),{from:-3,to:4})+P.dot(-3,3+2*Math.sin(-2.7))+P.dot(4,3+2*Math.sin(3.6)))}),
+  mcq(B("Quelle écriture est correcte ?","Which way of writing is correct?"),["[2 ; +∞[","[2 ; +∞]","]+∞ ; 2]"],B("Du côté de l'infini, le crochet est toujours ouvert.","On the infinity side, the bracket is always open.")),
+  tf(B("5 appartient à l'intervalle [2 ; 5[.","5 belongs to the interval [2 ; 5[."),false,B("Le crochet après 5 est tourné vers l'extérieur : 5 est exclu.","The bracket after 5 faces outwards: 5 is excluded.")),
+  mcq(B("Une feuille carrée mesure 21 cm de côté. On enroule une longueur x de la feuille. Quelles valeurs de x sont possibles ?","A square sheet is 21 cm wide. We roll up a length x of the sheet. Which values of x are possible?"),["[0 ; 21]","[0 ; 441]","]−∞ ; 21]"],B("x est une longueur entre 0 et 21 cm (441 est l'aire, pas une longueur).","x is a length between 0 and 21 cm (441 is the area, not a length).")),
+]};
+
+/* ---------- 6. Tracer une fonction ---------- */
+L.tracer={title:B("Tracer une fonction","Drawing a function"),glyph:"✎",build:()=>[
+  info(B("La méthode en 4 étapes","The method in 4 steps"),B(`<p>1. <b>Tableau de valeurs</b> : choisis des x, calcule les f(x).</p><p>2. <b>Les axes</b> : un titre avec l'unité sur chaque axe, et une graduation adaptée (les plus grandes valeurs doivent tenir dans la feuille, environ 10 carreaux).</p><p>3. <b>Place les points</b> (x ; f(x)).</p><p>4. <b>Relie</b> : à la règle si les points sont alignés, sinon par une courbe bien lisse.</p>`,
+    `<p>1. <b>Table of values</b> (<span class="fr-term">tableau de valeurs</span>): choose some x, calculate f(x).</p><p>2. <b>The axes</b>: a title with the unit on each axis, and a sensible scale (the biggest values must fit, about 10 squares).</p><p>3. <b>Plot the points</b> (x ; f(x)).</p><p>4. <b>Join them</b>: with a ruler if they are in a line, otherwise with a smooth curve.</p>`)),
+  {t:"table",q:B("Un taxi coûte 3 € de prise en charge, plus 2 € par kilomètre : f(x) = 2x + 3. Complète le tableau.","A taxi costs €3 to start plus €2 per kilometre: f(x) = 2x + 3. Fill in the table."),xs:[0,1,2,4,6],f:x=>2*x+3,ex:B("f(0) = 3 ; f(1) = 5 ; f(2) = 7 ; f(4) = 11 ; f(6) = 15.","f(0) = 3; f(1) = 5; f(2) = 7; f(4) = 11; f(6) = 15.")},
+  {t:"axes",q:B("Prépare le repère pour le taxi : x va de 0 à 6 km, le prix va de 0 à 15 €.","Prepare the axes for the taxi: x goes from 0 to 6 km, the price from €0 to €15."),
+    xt:[B("distance (km)","distance (km)"),B("prix (€)","price (€)"),B("temps (h)","time (h)")],xok:0,yt:[B("prix (€)","price (€)"),B("distance (km)","distance (km)"),B("vitesse (km/h)","speed (km/h)")],yok:0,
+    xmax:6,ymax:15,xsteps:[1,2,5,10],ysteps:[1,2,5,20],ex:B("Axe horizontal : la distance x. Axe vertical : le prix f(x). Graduation : 1 km par carreau et 2 € par carreau, pour que tout tienne en environ 6 à 10 carreaux.","Horizontal axis: the distance x. Vertical axis: the price f(x). Scale: 1 km per square and €2 per square, so that everything fits in about 6 to 10 squares.")},
+  {t:"plotpoints",q:B("Place les 5 points du tableau.","Plot the 5 points from the table."),plot:{xmin:0,xmax:7,ymin:0,ymax:16,w:330,h:340,xgrid:1,ygrid:1,ylab:2,xtitle:B("distance (km)","distance (km)"),ytitle:B("prix (€)","price (€)")},
+    points:[[0,3],[1,5],[2,7],[4,11],[6,15]],f:x=>2*x+3,from:0,to:7,shape:B("Les points sont alignés : on les relie à la règle. C'est une fonction affine (une droite).","The points are in a line: join them with a ruler. It is a linear function (a straight line).")},
+  {t:"table",q:B("Complète le tableau de f(x) = x².","Fill in the table of f(x) = x²."),xs:[-3,-2,-1,0,1,2,3],f:x=>x*x,ex:B("Attention : (−3)² = 9, un carré est toujours positif.","Careful: (−3)² = 9, a square is always positive.")},
+  {t:"plotpoints",q:B("Place les 7 points de f(x) = x².","Plot the 7 points of f(x) = x²."),plot:{xmin:-4,xmax:4,ymin:0,ymax:10,w:330,h:320,xtitle:"x",ytitle:"y"},
+    points:[[-3,9],[-2,4],[-1,1],[0,0],[1,1],[2,4],[3,9]],f:x=>x*x,from:-3.2,to:3.2,shape:B("Les points ne sont pas alignés : on trace une courbe lisse, en forme de U. C'est une parabole.","The points are not in a line: draw a smooth U-shaped curve. It is a parabola (parabole).")},
+  {t:"axes",q:B("Des bactéries doublent toutes les heures. On les compte pendant 4 heures : de 1 à 16 milliers. Prépare le repère.","Bacteria double every hour. We count them for 4 hours: from 1 to 16 thousand. Prepare the axes."),
+    xt:[B("temps (h)","time (h)"),B("bactéries (milliers)","bacteria (thousands)"),B("distance (km)","distance (km)")],xok:0,yt:[B("bactéries (milliers)","bacteria (thousands)"),B("temps (h)","time (h)"),B("prix (€)","price (€)")],yok:0,
+    xmax:4,ymax:16,xsteps:[1,2,5],ysteps:[1,2,5,10],ex:B("Le temps va sur l'axe horizontal. 16 milliers avec 2 par carreau : 8 carreaux. Avec 1 par carreau, il en faudrait 16 : trop.","Time goes on the horizontal axis. 16 thousand with 2 per square: 8 squares. With 1 per square you'd need 16: too many.")},
+  {t:"table",q:B("Complète : N(t) = 2ᵗ (en milliers de bactéries).","Fill in: N(t) = 2ᵗ (thousands of bacteria)."),xs:[0,1,2,3,4],f:x=>2**x,xname:"t",fname:"N(t)",ex:B("2⁰ = 1 ; 2¹ = 2 ; 2² = 4 ; 2³ = 8 ; 2⁴ = 16. On multiplie par 2 à chaque heure.","2⁰ = 1; 2¹ = 2; 2² = 4; 2³ = 8; 2⁴ = 16. Multiply by 2 every hour.")},
+  {t:"plotpoints",q:B("Place les 5 points des bactéries.","Plot the 5 bacteria points."),plot:{xmin:0,xmax:5,ymin:0,ymax:17,w:330,h:340,xgrid:1,ygrid:1,ylab:2,xtitle:B("temps (h)","time (h)"),ytitle:B("bactéries (milliers)","bacteria (thousands)")},
+    points:[[0,1],[1,2],[2,4],[3,8],[4,16]],f:x=>2**x,from:0,to:4.08,shape:B("La courbe monte de plus en plus vite : c'est une croissance exponentielle.","The curve rises faster and faster: this is exponential growth.")},
+  mcq(B("Tu dois représenter des valeurs de y entre 0 et 400 sur environ 10 carreaux. Quelle graduation choisis-tu ?","You must show y values between 0 and 400 on about 10 squares. Which scale do you choose?"),[B("50 par carreau","50 per square"),B("1 par carreau","1 per square"),B("400 par carreau","400 per square")],B("400 ÷ 50 = 8 carreaux : parfait. Avec 1, il faudrait 400 carreaux ; avec 400, tout serait écrasé sur 1 carreau.","400 ÷ 50 = 8 squares: perfect. With 1, you'd need 400 squares; with 400, everything would be squashed into 1 square.")),
+]};
+
+/* ---------- 7. Les formes ---------- */
+const TH={w:150,h:115,xmin:-4,xmax:4,ymin:-3,ymax:5};
+L.formes={title:B("Les formes des graphes","Shapes of graphs"),glyph:"∪",build:()=>[
+  info(B("Cinq formes à reconnaître","Five shapes to recognise"),B("<p>Touche chaque forme pour la voir.</p>","<p>Tap each shape to see it.</p>"),{widget:W.shapes()}),
+  info(B("Le test de la droite verticale","The vertical line test"),B("<p>Une courbe est le graphique d'une fonction si <b>toute droite verticale la touche au plus une fois</b> (chaque x a une seule image).</p>","<p>A curve is the graph of a function if <b>every vertical line touches it at most once</b> (each x has exactly one image).</p>"),{widget:W.vline()}),
+  buckets(B("Ces courbes sont-elles des graphiques de fonctions ?","Are these curves graphs of functions?"),[{id:"y",l:B("Fonction","Function")},{id:"n",l:B("Pas une fonction","Not a function")}],
+    [{h:()=>thumb(P=>P.curve(()=>2),TH),c:"y"},{h:()=>thumb(P=>P.seg(1,-3,1,5),TH),c:"n"},{h:()=>thumb(P=>P.curve(x=>x*x/2-2),TH),c:"y"},{h:()=>thumb(P=>`<circle cx="${P.sx(0)}" cy="${P.sy(1)}" r="${P.sx(2.5)-P.sx(0)}" fill="none" style="stroke:var(--c1)" stroke-width="2.6"/>`,TH),c:"n"},{h:()=>thumb(P=>P.curve(x=>2**x-2),TH),c:"y"},{h:()=>thumb(P=>{const p=[];for(let i=0;i<=60;i++){const y=-3+8*i/60;p.push([(y-1)*(y-1)/3-3,y])}return P.poly(p)},TH),c:"n"}],
+    B("Si une droite verticale peut toucher la courbe 2 fois ou plus, ce n'est pas une fonction.","If a vertical line can touch the curve 2 or more times, it is not a function."),{thumbs:true}),
+  buckets(B("Range chaque fonction selon sa forme.","Sort each function by its shape."),[{id:"c",l:B("Constante","Constant")},{id:"a",l:B("Affine","Linear")},{id:"q",l:B("Carré","Quadratic")},{id:"e",l:B("Exponentielle","Exponential")}],
+    [{h:"f(x) = 5",c:"c"},{h:"f(x) = 3x − 2",c:"a"},{h:"f(x) = x²",c:"q"},{h:"f(x) = 2ˣ",c:"e"},{h:"f(x) = −x + 4",c:"a"},{h:"f(x) = 3 × 2ˣ",c:"e"},{h:"f(x) = 0,5x²",c:"q"},{h:"f(x) = −1",c:"c"}],
+    B("Pas de x : constante. x tout seul : affine. x² : carré. x en exposant : exponentielle.","No x: constant. Plain x: linear. x²: quadratic. x as an exponent: exponential.")),
+  mcq(B("Que peut-on dire de cette fonction ?","What can you say about this function?"),[B("Elle est constante : f(x) = 2 pour tout x","It is constant: f(x) = 2 for every x"),B("Elle augmente","It is increasing"),B("Ce n'est pas une fonction","It is not a function")],B("Une droite horizontale : l'image est toujours 2.","A horizontal line: the image is always 2."),{fig:fig({xmin:-4,xmax:4,ymin:-2,ymax:4,w:300,h:220},P=>P.curve(()=>2))}),
+  mcq(B("Pourquoi cette droite n'est-elle pas le graphique d'une fonction ?","Why is this line not the graph of a function?"),[B("Le nombre 2 aurait une infinité d'images","The number 2 would have infinitely many images"),B("Elle est trop longue","It is too long"),B("Elle ne passe pas par l'origine","It doesn't go through the origin")],B("Une fonction donne une seule image à chaque x. Ici x = 2 en aurait une infinité.","A function gives one image to each x. Here x = 2 would have infinitely many."),{fig:fig({xmin:-4,xmax:4,ymin:-3,ymax:4,w:300,h:220},P=>P.seg(2,-3,2,4,{color:"var(--c2)"}))}),
+  info(B("Joue avec les nombres","Play with the numbers"),B("<p>Bouge les curseurs et observe ce qui change.</p>","<p>Move the sliders and watch what changes.</p>"),{widget:W.sliders()}),
+  mcq(B("Dans f(x) = ax + b, si a = 0, la droite est…","In f(x) = ax + b, if a = 0, the line is…"),[B("horizontale","horizontal"),B("verticale","vertical"),B("une parabole","a parabola")],B("Il reste f(x) = b : une fonction constante, donc une droite horizontale.","Only f(x) = b is left: a constant function, so a horizontal line.")),
+]};
+
+/* ---------- 8. Dans la vie ---------- */
+L.vie={title:B("Affine, carré, exponentielle","Linear, quadratic, exponential"),glyph:"2ˣ",build:()=>[
+  info(B("La course à l'argent","The money race"),B("<p>Trois amis reçoivent de l'argent chaque jour :<br><b>A</b> : 20 € par jour (affine, 20x)<br><b>B</b> : jour² euros (carré, x²)<br><b>C</b> : 1 € le jour 0, puis le double chaque jour (exponentielle, 2ˣ)</p>","<p>Three friends receive money every day:<br><b>A</b>: €20 per day (linear, 20x)<br><b>B</b>: day² euros (quadratic, x²)<br><b>C</b>: €1 on day 0, then double every day (exponential, 2ˣ)</p>"),{widget:W.race()}),
+  mcq(B("Au jour 5, qui a le plus ?","On day 5, who has the most?"),[B("A : 100 €","A: €100"),B("B : 25 €","B: €25"),B("C : 32 €","C: €32")],B("20 × 5 = 100 ; 5² = 25 ; 2⁵ = 32. Au début, l'affine est devant.","20 × 5 = 100; 5² = 25; 2⁵ = 32. At the start, linear is ahead.")),
+  mcq(B("Au jour 12, qui a le plus ?","On day 12, who has the most?"),[B("C : 4 096 €","C: €4,096"),B("A : 240 €","A: €240"),B("B : 144 €","B: €144")],B("2¹² = 4 096. L'exponentielle finit toujours par dépasser tout le monde.","2¹² = 4,096. Exponential always ends up overtaking everyone.")),
+  info(B("Dans la vraie vie","In real life"),B(`<div class="tw"><table><tr><th>Affine (droite)</th><th>Carré (parabole)</th><th>Exponentielle</th></tr>
+    <tr><td>On <b>ajoute</b> toujours la même quantité.</td><td>Grandit comme une <b>surface</b> ou avec une <b>accélération</b>.</td><td>On <b>multiplie</b> toujours par le même nombre.</td></tr>
+    <tr><td>Taxi : 3 € + 2 € par km<br>Forfait de téléphone<br>Remplir une baignoire à débit constant<br>Marcher à vitesse constante</td><td>Aire d'un carré de côté x<br>Pierre qui tombe : d = 5t²<br>Distance de freinage (vitesse²)<br>Voiture qui accélère</td><td>Bactéries qui doublent<br>Vidéo partagée par chacun à 2 amis<br>Épargne avec intérêts<br>Feuille pliée en deux (l'épaisseur double)</td></tr></table></div>`,
+    `<div class="tw"><table><tr><th>Linear (affine, straight line)</th><th>Quadratic (parabola)</th><th>Exponential</th></tr>
+    <tr><td>You always <b>add</b> the same amount.</td><td>Grows like an <b>area</b> or with <b>acceleration</b>.</td><td>You always <b>multiply</b> by the same number.</td></tr>
+    <tr><td>Taxi: €3 + €2 per km<br>Phone plan<br>Filling a bath at a steady rate<br>Walking at a steady speed</td><td>Area of a square of side x<br>Falling stone: d = 5t²<br>Braking distance (speed²)<br>Car speeding up</td><td>Bacteria doubling<br>A video everyone shares with 2 friends<br>Savings with interest<br>Folding paper in half (thickness doubles)</td></tr></table></div>`)),
+  buckets(B("Range chaque situation.","Sort each situation."),[{id:"a",l:B("Affine","Linear")},{id:"q",l:B("Carré","Quadratic")},{id:"e",l:B("Exponentielle","Exponential")}],
+    [{h:B("Un abonnement de 10 € + 1 € par film","A €10 subscription + €1 per film"),c:"a"},{h:B("L'aire d'un carré selon son côté","The area of a square from its side"),c:"q"},{h:B("Un virus qui triple chaque jour","A virus that triples every day"),c:"e"},{h:B("Une bougie qui fond de 1 cm par heure","A candle that melts 1 cm per hour"),c:"a"},{h:B("La distance d'une pierre qui tombe","The distance of a falling stone"),c:"q"},{h:B("Une somme placée à 5 % par an","Money invested at 5% a year"),c:"e"}],
+    B("Ajouter la même quantité : affine. Surface ou chute : carré. Multiplier par le même nombre : exponentielle.","Adding the same amount: linear. Area or falling: quadratic. Multiplying by the same number: exponential.")),
+  mcq(B("Une feuille de 0,1 mm d'épaisseur est pliée en deux 10 fois. Son épaisseur devient environ…","A sheet 0.1 mm thick is folded in half 10 times. Its thickness becomes about…"),[B("10 cm","10 cm"),B("1 mm","1 mm"),B("2 mm","2 mm")],B("0,1 × 2¹⁰ = 0,1 × 1 024 = 102,4 mm, environ 10 cm ! C'est la puissance de l'exponentielle.","0.1 × 2¹⁰ = 0.1 × 1,024 = 102.4 mm, about 10 cm! That's the power of exponential growth.")),
+  mcq(B("On double le côté d'un carré. Son aire est…","You double the side of a square. Its area is…"),[B("multipliée par 4","multiplied by 4"),B("multipliée par 2","multiplied by 2"),B("la même","the same")],B("(2x)² = 4x² : l'aire est multipliée par 4. C'est l'effet du carré.","(2x)² = 4x²: the area is multiplied by 4. That's the quadratic effect.")),
+  tf(B("Une croissance exponentielle (×2 à chaque fois) finit toujours par dépasser une croissance affine.","Exponential growth (×2 each time) always ends up overtaking linear growth."),true,B("Oui : même si l'affine est devant au début, l'exponentielle la dépasse un jour.","Yes: even if linear is ahead at the start, exponential overtakes it one day.")),
+]};
+
+/* ---------- 9. Le coureur ---------- */
+const DT={w:160,h:110,xmin:0,xmax:20,ymin:0,ymax:40,labels:false,xgrid:5,ygrid:10};
+const VT={w:160,h:110,xmin:0,xmax:20,ymin:-6,ymax:6,labels:false,xgrid:5,ygrid:2};
+L.coureur={title:B("Le coureur","The runner"),glyph:"m/s",build:()=>[
+  info(B("Distance et vitesse en direct","Distance and speed, live"),B("<p>Regarde le coureur et les deux graphiques qui se dessinent : à gauche la <b>position</b> (distance au départ), à droite la <b>vitesse</b>. Essaie les 4 situations.</p>","<p>Watch the runner and the two graphs drawing themselves: on the left his <b>position</b> (distance from the start), on the right his <b>speed</b> (<span class=\"fr-term\">vitesse</span>). Try all 4 situations.</p>"),{widget:W.runner({mode:"demo"})}),
+  info(B("Ce qu'il faut retenir","What to remember"),B(`<div class="tw"><table><tr><th>Le coureur…</th><th>Graphique distance-temps</th><th>Graphique vitesse-temps</th></tr>
+    <tr><td>avance à vitesse constante</td><td>droite qui monte</td><td>droite horizontale au-dessus de 0</td></tr>
+    <tr><td>est arrêté</td><td>droite <b>horizontale</b></td><td>sur l'axe : vitesse 0</td></tr>
+    <tr><td>revient vers le départ</td><td>droite qui <b>descend</b></td><td>en dessous de 0 : vitesse <b>négative</b></td></tr>
+    <tr><td>accélère</td><td>courbe de plus en plus raide (<b>parabole</b>)</td><td>droite qui monte</td></tr></table></div>
+    <div class="ex">Plus la droite distance-temps est <b>penchée</b>, plus il va <b>vite</b>. Vitesse = distance ÷ temps.</div>
+    <div class="warn">Une droite <b>verticale</b> sur un graphique distance-temps est impossible : ce serait être à plusieurs endroits au même instant.</div>`,
+    `<div class="tw"><table><tr><th>The runner…</th><th>Distance-time graph</th><th>Speed-time graph</th></tr>
+    <tr><td>moves at a constant speed</td><td>rising straight line</td><td>horizontal line above 0</td></tr>
+    <tr><td>is stopped</td><td><b>horizontal</b> line</td><td>on the axis: speed 0</td></tr>
+    <tr><td>comes back to the start</td><td>line going <b>down</b></td><td>below 0: <b>negative</b> speed</td></tr>
+    <tr><td>speeds up</td><td>curve getting steeper (<b>parabola</b>)</td><td>rising line</td></tr></table></div>
+    <div class="ex">The <b>steeper</b> the distance-time line, the <b>faster</b> he goes. Speed = distance ÷ time.</div>
+    <div class="warn">A <b>vertical</b> line on a distance-time graph is impossible: it would mean being in several places at the same moment.</div>`)),
+  info(B("À toi : invente un parcours","Your turn: invent a run"),B("<p>Ajoute des étapes, puis lance le coureur. Essaie : avancer, s'arrêter, revenir. Regarde la vitesse devenir négative au retour.</p>","<p>Add steps, then play. Try: forward, stop, back. Watch the speed become negative on the way back.</p>"),{widget:W.runner({mode:"build"})}),
+  mcq(B("Que fait le coureur entre 10 s et 15 s ?","What is the runner doing between 10 s and 15 s?"),[B("Il est arrêté","He is stopped"),B("Il revient","He is coming back"),B("Il accélère","He is speeding up")],B("La distance ne change pas : la droite est horizontale.","The distance doesn't change: the line is horizontal."),{fig:fig({xmin:0,xmax:25,ymin:0,ymax:50,w:320,h:220,xgrid:5,ygrid:10,pad:{l:38},xtitle:B("temps (s)","time (s)"),ytitle:B("distance (m)","distance (m)")},P=>P.poly([[0,0],[10,40],[15,40],[25,0]]))}),
+  mcq(B("Le coureur revient vers le départ à 4 m/s. Sur le graphique vitesse-temps, sa vitesse est…","The runner comes back towards the start at 4 m/s. On the speed-time graph, his speed is…"),["−4 m/s","4 m/s","0 m/s"],B("Il va dans l'autre sens : la vitesse est négative.","He moves the other way: the speed is negative.")),
+  num(B("Quelle est la vitesse du coureur (en m/s) ?","What is the runner's speed (in m/s)?"),4,B("Il parcourt 40 m en 10 s : 40 ÷ 10 = 4 m/s.","He covers 40 m in 10 s: 40 ÷ 10 = 4 m/s."),{unit:"m/s",fig:fig({xmin:0,xmax:12,ymin:0,ymax:50,w:320,h:220,xgrid:2,ygrid:10,pad:{l:38},xtitle:B("temps (s)","time (s)"),ytitle:B("distance (m)","distance (m)")},P=>P.seg(0,0,10,40)+P.dot(10,40,{r:4}))}),
+  mcq(B("Une droite verticale sur un graphique distance-temps voudrait dire…","A vertical line on a distance-time graph would mean…"),[B("être à plusieurs endroits au même instant : impossible","being in several places at the same moment: impossible"),B("aller très vite","going very fast"),B("être arrêté","being stopped")],B("Au même temps t, il aurait plusieurs distances. Ce n'est pas une fonction.","At the same time t, he would have several distances. That's not a function.")),
+  mcq(B("Voici un graphique distance-temps. Quel est le bon graphique vitesse-temps ?","Here is a distance-time graph. Which is the right speed-time graph?"),
+    [()=>thumb(P=>P.seg(0,4,8,4,{color:"var(--c2)"})+P.seg(8,0,12,0,{color:"var(--c2)"})+P.seg(12,-4,20,-4,{color:"var(--c2)"}),VT),()=>thumb(P=>P.seg(0,4,8,4,{color:"var(--c2)"})+P.seg(8,0,12,0,{color:"var(--c2)"})+P.seg(12,4,20,4,{color:"var(--c2)"}),VT),()=>thumb(P=>P.poly([[0,0],[8,4],[12,4],[20,0]],{color:"var(--c2)"}),VT)],
+    B("Aller : vitesse positive constante. Pause : 0. Retour : vitesse négative constante.","Going: constant positive speed. Break: 0. Return: constant negative speed."),{cols:2,fig:fig({xmin:0,xmax:20,ymin:0,ymax:40,w:320,h:200,xgrid:4,ygrid:10,pad:{l:38},xtitle:B("temps (s)","time (s)"),ytitle:B("distance (m)","distance (m)")},P=>P.poly([[0,0],[8,32],[12,32],[20,0]]))}),
+  mcq(B("Une voiture démarre et accélère régulièrement. Sa distance en fonction du temps est…","A car starts and speeds up steadily. Its distance as a function of time is…"),[B("une parabole (fonction carré)","a parabola (quadratic)"),B("une droite","a straight line"),B("horizontale","horizontal")],B("Avec une accélération, la vitesse monte en droite et la distance en parabole.","With acceleration, the speed rises in a straight line and the distance as a parabola.")),
+]};
+
+/* ---------- 10. Lire un parcours ---------- */
+const WK={w:160,h:115,xmin:0,xmax:5,ymin:0,ymax:14,labels:false,xgrid:1,ygrid:2};
+const PC={xmin:0,xmax:1.5,ymin:0,ymax:26,w:330,h:300,xgrid:0.25,xlab:0.5,ygrid:1,ylab:5,pad:{l:38},xtitle:B("temps (h)","time (h)"),ytitle:B("distance de A (km)","distance from A (km)")};
+L.parcours={title:B("Lire un parcours","Reading a journey"),glyph:"km",build:()=>[
+  mcq(B("Un promeneur marche régulièrement pendant 3 h, s'arrête 1 h, puis rentre chez lui en autocar en 30 min. Quel graphique correspond ?","A walker walks steadily for 3 h, stops for 1 h, then goes home by coach in 30 min. Which graph matches?"),
+    [()=>thumb(P=>P.poly([[0,0],[3,12],[4,12],[4.5,0]]),WK),()=>thumb(P=>P.poly([[0,0],[3,12],[4,12],[4,0]]),WK),()=>thumb(P=>P.poly([[0,0],[3,12],[4.5,0]]),WK),()=>thumb(P=>P.poly([[0,0],[1.5,4],[3,12],[4,12],[4.5,0]]),WK)],
+    B("Montée régulière (3 h), plat (1 h), descente rapide mais pas verticale (30 min).","Steady rise (3 h), flat (1 h), quick descent but not vertical (30 min)."),{cols:2}),
+  num(B("Il marche 12 km en 3 h. Quelle est sa vitesse ?","He walks 12 km in 3 h. What is his speed?"),4,B("12 ÷ 3 = 4 km/h.","12 ÷ 3 = 4 km/h."),{unit:"km/h",fig:fig({xmin:0,xmax:5,ymin:0,ymax:14,w:320,h:220,xgrid:0.5,xlab:1,ygrid:2,pad:{l:38},xtitle:B("temps (h)","time (h)"),ytitle:B("distance (km)","distance (km)")},P=>P.poly([[0,0],[3,12],[4,12],[4.5,0]]))}),
+  num(B("L'autocar fait 12 km en 30 min. Quelle est sa vitesse ?","The coach covers 12 km in 30 min. What is its speed?"),24,B("30 min = 0,5 h. 12 ÷ 0,5 = 24 km/h (ou : 12 km en une demi-heure, donc 24 km en une heure).","30 min = 0.5 h. 12 ÷ 0.5 = 24 km/h (or: 12 km in half an hour, so 24 km in an hour)."),{unit:"km/h"}),
+  info(B("Le piéton et le cycliste","The walker and the cyclist"),()=>{const P=Plot(PC);return tx(B("<p>Les villes A et B sont à 25 km. À 10 h, un <span style=\"color:var(--c1)\">piéton</span> part de A vers B à 5 km/h. Au même moment, un <span style=\"color:var(--c2)\">cycliste</span> part de B vers A à 20 km/h. On trace leur distance à la ville A.</p>","<p>Towns A and B are 25 km apart. At 10:00, a <span style=\"color:var(--c1)\">walker</span> leaves A for B at 5 km/h. At the same time, a <span style=\"color:var(--c2)\">cyclist</span> leaves B for A at 20 km/h. We plot their distance from town A.</p>"))+P.svg(P.seg(0,0,1.5,7.5)+P.seg(0,25,1.25,0,{color:"var(--c2)"}))+tx(B("<p>Le piéton s'éloigne de A : sa droite monte. Le cycliste se rapproche de A : sa droite descend. Là où elles se croisent, ils se rencontrent.</p>","<p>The walker moves away from A: his line goes up. The cyclist gets closer to A: his line goes down. Where they cross, they meet.</p>"))}),
+  {t:"tap",q:B("Touche le point où ils se croisent.","Tap the point where they meet."),plot:PC,draw:P=>P.seg(0,0,1.5,7.5)+P.seg(0,25,1.25,0,{color:"var(--c2)"}),targets:[[1,5]],snap:[0.25,1],ex:B("Les droites se croisent en (1 ; 5) : au bout d'1 h, à 5 km de A.","The lines cross at (1 ; 5): after 1 h, 5 km from A.")},
+  mcq(B("Ils sont partis à 10 h. À quelle heure se croisent-ils ?","They left at 10:00. At what time do they meet?"),[B("11 h","11:00"),B("10 h 30","10:30"),B("12 h","12:00")],B("Le croisement est à t = 1 h : 10 h + 1 h = 11 h.","They meet at t = 1 h: 10:00 + 1 h = 11:00.")),
+  mcq(B("À quelle distance de la ville B se croisent-ils ?","How far from town B do they meet?"),["20 km","5 km","25 km"],B("Ils sont à 5 km de A, donc à 25 − 5 = 20 km de B.","They are 5 km from A, so 25 − 5 = 20 km from B.")),
+]};
+
+/* ---------- 11. Intersection ---------- */
+const IP={xmin:-3,xmax:5,ymin:-2,ymax:8,w:330,h:320,xtitle:"x",ytitle:"y"};
+const GYM={xmin:0,xmax:8,ymin:0,ymax:72,w:330,h:320,xgrid:1,ygrid:2,ylab:10,pad:{l:38},xtitle:B("séances","sessions"),ytitle:B("prix (€)","price (€)")};
+L.inter={title:B("Intersection de deux fonctions","Where two functions meet"),glyph:"✕",build:()=>[
+  info(B("Le point d'intersection","The intersection point"),()=>{const P=Plot(IP);return P.svg(P.curve(x=>2*x+1)+P.curve(x=>-x+7,{color:"var(--c2)"})+P.dot(2,5,{color:"var(--amber)",r:7,label:"(2 ; 5)"}))+tx(B(
+    `<p>Les droites <span style="color:var(--c1)">f(x) = 2x + 1</span> et <span style="color:var(--c2)">g(x) = −x + 7</span> se croisent. Au point de croisement, les deux fonctions ont <b>le même x et la même image</b>.</p>
+     <p><b>Par le calcul</b>, on résout <b>f(x) = g(x)</b> :</p>
+     <div class="ex">2x + 1 = −x + 7<br>2x + x = 7 − 1<br>3x = 6<br>x = 2<br>Puis on calcule l'image : f(2) = 2 × 2 + 1 = 5.<br>Le point d'intersection est <b>(2 ; 5)</b>.</div>`,
+    `<p>The lines <span style="color:var(--c1)">f(x) = 2x + 1</span> and <span style="color:var(--c2)">g(x) = −x + 7</span> cross. At the crossing point, both functions have <b>the same x and the same image</b>.</p>
+     <p><b>By calculation</b>, solve <b>f(x) = g(x)</b>:</p>
+     <div class="ex">2x + 1 = −x + 7<br>2x + x = 7 − 1<br>3x = 6<br>x = 2<br>Then calculate the image: f(2) = 2 × 2 + 1 = 5.<br>The intersection point is <b>(2 ; 5)</b>.</div>`))}),
+  {t:"tap",q:B("Touche le point d'intersection de f(x) = x + 1 et g(x) = −2x + 4.","Tap the intersection point of f(x) = x + 1 and g(x) = −2x + 4."),plot:IP,draw:P=>P.curve(x=>x+1)+P.curve(x=>-2*x+4,{color:"var(--c2)"}),targets:[[1,2]],snap:[0.5,0.5],ex:B("Les droites se croisent en (1 ; 2).","The lines cross at (1 ; 2).")},
+  order(B("Remets la résolution de x + 1 = −2x + 4 dans l'ordre.","Put the solution of x + 1 = −2x + 4 in order."),["x + 1 = −2x + 4","x + 2x = 4 − 1","3x = 3","x = 1",B("f(1) = 2, donc le point est (1 ; 2)","f(1) = 2, so the point is (1 ; 2)")],B("On regroupe les x d'un côté, les nombres de l'autre, on divise, puis on calcule l'image.","Put the x terms on one side, the numbers on the other, divide, then calculate the image."),{col:true}),
+  num(B("f(x) = 3x − 2 et g(x) = x + 4. Résous f(x) = g(x). x = ?","f(x) = 3x − 2 and g(x) = x + 4. Solve f(x) = g(x). x = ?"),3,B("3x − 2 = x + 4, donc 2x = 6, donc x = 3.","3x − 2 = x + 4, so 2x = 6, so x = 3.")),
+  num(B("Et l'ordonnée du point d'intersection ? (calcule g(3))","And the y-coordinate of the intersection point? (calculate g(3))"),7,B("g(3) = 3 + 4 = 7. Vérification : f(3) = 9 − 2 = 7. Le point est (3 ; 7).","g(3) = 3 + 4 = 7. Check: f(3) = 9 − 2 = 7. The point is (3 ; 7).")),
+  info(B("Deux formules de salle de sport","Two gym offers"),()=>{const P=Plot(GYM);return tx(B("<p><span style=\"color:var(--c1)\">Formule A</span> : 20 € d'inscription + 4 € par séance : A(x) = 4x + 20.<br><span style=\"color:var(--c2)\">Formule B</span> : 9 € par séance, sans inscription : B(x) = 9x.</p>","<p><span style=\"color:var(--c1)\">Offer A</span>: €20 to join + €4 per session: A(x) = 4x + 20.<br><span style=\"color:var(--c2)\">Offer B</span>: €9 per session, nothing to join: B(x) = 9x.</p>"))+P.svg(P.curve(x=>4*x+20,{from:0})+P.curve(x=>9*x,{from:0,color:"var(--c2)"}))+tx(B("<p>Avant le croisement, la droite rouge (B) est plus basse : B est moins chère. Après, c'est A.</p>","<p>Before the crossing, the red line (B) is lower: B is cheaper. After it, A is cheaper.</p>"))}),
+  {t:"tap",q:B("Touche le point où les deux formules coûtent le même prix.","Tap the point where both offers cost the same."),plot:GYM,draw:P=>P.curve(x=>4*x+20,{from:0})+P.curve(x=>9*x,{from:0,color:"var(--c2)"}),targets:[[4,36]],snap:[1,2],ex:B("4x + 20 = 9x donne 5x = 20, x = 4 séances, pour 36 €.","4x + 20 = 9x gives 5x = 20, x = 4 sessions, for €36.")},
+  mcq(B("Quand la formule A est-elle la plus avantageuse ?","When is offer A the better deal?"),[B("à partir de 5 séances","from 5 sessions on"),B("pour moins de 4 séances","for fewer than 4 sessions"),B("jamais","never")],B("Après x = 4, la droite de A est en dessous de celle de B : A coûte moins cher.","After x = 4, A's line is below B's: A costs less.")),
+  {t:"tap",q:B("La droite g(x) = x + 2 et la parabole f(x) = x² se coupent deux fois. Touche les deux points.","The line g(x) = x + 2 and the parabola f(x) = x² cross twice. Tap both points."),plot:IP,draw:P=>P.curve(x=>x*x)+P.curve(x=>x+2,{color:"var(--c2)"}),targets:[[-1,1],[2,4]],snap:[0.5,0.5],ex:B("(−1 ; 1) et (2 ; 4). Une droite et une parabole peuvent se couper en 0, 1 ou 2 points.","(−1 ; 1) and (2 ; 4). A line and a parabola can cross at 0, 1 or 2 points.")},
+  mcq(B("Le point d'intersection des courbes de f et g vérifie…","The intersection point of the graphs of f and g satisfies…"),["f(x) = g(x)","f(x) = 0","f(0) = g(0)"],B("Même x, même image : f(x) = g(x).","Same x, same image: f(x) = g(x).")),
+]};
+
+const PATH=["repere","image","lire","zero","domaine","tracer","formes","vie","coureur","parcours","inter"];
+/* =====================================================================
+   ENGINE
+   ===================================================================== */
+const val=v=>typeof v==="function"?v():tx(v);
+const U=(fr,en)=>LANG==="fr"?fr:en;
+
+/* ---------- storage ---------- */
+const KEY="maths-fonctions";
+let DB={unlockAll:false,lang:"fr",s:{}};
+const fresh=()=>({xp:0,done:{},streak:{n:0,last:null},history:[],name:""});
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||"null");if(v)DB={...DB,...v}}catch(e){} DB.s={...fresh(),...DB.s}; LANG=DB.lang||"fr"}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
+function bumpStreak(){const st=DB.s.streak,t=todayStr();if(st.last===t)return;const y=new Date(Date.now()-864e5).toISOString().slice(0,10);st.n=st.last===y?st.n+1:1;st.last=t}
+function streakNow(){const st=DB.s.streak,t=todayStr(),y=new Date(Date.now()-864e5).toISOString().slice(0,10);return (st.last===t||st.last===y)?st.n:0}
+const getName=()=>((DB.s.name)||STUDENT_NAME||"").trim();
+
+/* ---------- language switch ---------- */
+let SCREEN=()=>{};
+function langBtnHTML(){return `<button class="lang" data-lang="1" aria-label="Langue / Language"><span class="${LANG==="fr"?"cur":""}">FR</span><span class="${LANG==="en"?"cur":""}">EN</span></button>`}
+function syncLangBtns(){document.querySelectorAll(".lang span").forEach((s,i)=>{const l=s.dataset.l||(s.textContent==="FR"?"fr":"en");s.classList.toggle("cur",l===LANG)});document.documentElement.lang=LANG}
+function setLang(l){LANG=l;DB.lang=l;save();syncLangBtns();if(S&&lesson.classList.contains("open"))rerenderItem();else SCREEN()}
+document.addEventListener("click",e=>{const b=e.target.closest(".lang");if(b)setLang(LANG==="fr"?"en":"fr")});
+
+/* ---------- screens ---------- */
+const app=document.getElementById("app");
+const LOCK=`<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>`;
+function nameScreen(){SCREEN=nameScreen;
+  app.innerHTML=`<div class="top"><span></span>${langBtnHTML()}</div><section class="hero"><h1>${U("Bienvenue !","Welcome!")}</h1><p>${U("Avant de commencer, écris ton prénom.","Before you start, type your first name.")}</p></section>
+    <div class="numin" style="margin-top:20px"><input id="nm" maxlength="30" autocomplete="off" aria-label="${U("Prénom","First name")}" style="width:280px;font-size:24px"><button class="btn go" id="nmOk" disabled>${U("Commencer","Start")}</button></div>`;
+  const inp=document.getElementById("nm"),ok=document.getElementById("nmOk");
+  inp.oninput=()=>{ok.disabled=!inp.value.trim()};
+  const go=()=>{const v=inp.value.trim();if(!v)return;DB.s.name=v;save();path()};
+  ok.onclick=go;inp.onkeydown=e=>{if(e.key==="Enter")go()};inp.focus();
+}
+function starsHTML(n){return `${"★".repeat(n)}<span class="off">${"★".repeat(3-n)}</span>`}
+function path(){SCREEN=path;
+  if(!getName())return nameScreen();
+  const D=DB.s, firstOpen=DB.preview?-1:PATH.findIndex(id=>!D.done[id]);
+  app.innerHTML=`<div class="top"><h2>${esc(getName())}</h2><div class="chips"><span class="chip">${U(`Série : ${streakNow()} j`,`Streak: ${streakNow()} day${streakNow()===1?"":"s"}`)}</span><span class="chip">${D.xp} XP</span>${langBtnHTML()}</div></div>
+    ${DB.preview?`<div class="pvbanner"><div><strong>${U("Mode aperçu tuteur","Tutor preview mode")}</strong><span>${U("Toutes les leçons sont ouvertes. Tu peux passer les questions et voir les réponses. Rien n'est enregistré.","All lessons are open. You can skip questions and see the answers. Nothing is saved.")}</span></div><button class="btn sm" id="pvOff">${U("Quitter l'aperçu","Leave preview")}</button></div>`:""}
+    <section class="hero" style="padding-top:14px"><h1 style="font-size:clamp(28px,6vw,40px)">${U("Les fonctions","Functions")}</h1><p>${U("Graphiques, images, antécédents, vitesse et distance. Une leçon à la fois.","Graphs, images, antécédents, speed and distance. One lesson at a time.")}</p></section>
+    <div class="path">${PATH.map((id,i)=>{const done=D.done[id],locked=!DB.unlockAll&&firstOpen!==-1&&i>firstOpen,now=i===firstOpen;
+      return `<div class="step"><button class="bubble ${done?"done":now?"now":locked?"locked":DB.preview?"pv":""}" data-id="${id}" ${locked?'aria-disabled="true"':""} aria-label="${esc(tx(L[id].title))}">${locked?LOCK:esc(L[id].glyph)}</button><div class="stars">${done?starsHTML(done.stars):""}</div><div class="steplbl">${esc(tx(L[id].title))}</div></div>`}).join("")}</div>
+    <div style="text-align:center"><button class="btn primary" id="reportBtn">${U("Envoyer mon rapport au tuteur","Send my report to my tutor")}</button></div>
+    <div class="tutor"><button class="btn ghost" id="tutorBtn">${U("Espace tuteur","Tutor area")}</button></div>`;
+  app.querySelectorAll(".bubble").forEach(b=>b.onclick=()=>{if(b.classList.contains("locked"))return;startLesson(b.dataset.id)});
+  document.getElementById("reportBtn").onclick=report;
+  document.getElementById("tutorBtn").onclick=tutorGate;
+  const po=document.getElementById("pvOff");if(po)po.onclick=()=>{DB.preview=false;save();path()};
+}
+
+/* ---------- lesson engine ---------- */
+const lesson=document.getElementById("lesson"),lbody=document.getElementById("lbody"),lfoot=document.getElementById("lfoot"),lfootin=document.getElementById("lfootin"),lprog=document.getElementById("lprog"),comboEl=document.getElementById("combo");
+let S=null;
+function startLesson(id){
+  const items=L[id].build();
+  S={id,missed:[],queue:[...items],done:0,mistakes:0,xp:0,combo:0,retry:new Set(),t0:Date.now(),firstTry:0,phase:"answer",fb:null,r:null,preview:!!DB.preview,items,pi:0,shown:false,hist:[],rv:null,skipped:new Set(),skips:0};
+  lesson.classList.add("open");document.body.style.overflow="hidden";syncLangBtns();
+  if(S.preview)pvGo(0);else next();
+}
+function quit(){lesson.classList.remove("open");document.body.style.overflow="";S=null;path()}
+document.getElementById("lclose").onclick=quit;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S&&lesson.classList.contains("open"))quit()});
+function setProg(){const tot=S.done+S.queue.length;lprog.style.width=(tot?S.done/tot*100:0)+"%";comboEl.textContent=S.combo>=3?U(`${S.combo} d'affilée`,`${S.combo} in a row`):""}
+function footer(html,cls=""){lfoot.className="lfoot "+cls;lfootin.innerHTML=html}
+
+function next(){setProg();if(!S.queue.length)return finish();S.cur=S.queue[0];S.phase="answer";S.fb=null;renderItem()}
+function rerenderItem(){if(S.rv!=null)return rvGo(S.rv);if(S.preview){if(S.phase==="end")return pvEnd();renderItem();if(S.shown)pvShow();return}if(S.phase==="end")return finish(true);renderItem();if(S.phase==="feedback"){if(S.r.solve)S.r.solve();if(S.r.lock)S.r.lock();feedbackFooter()}}
+function drawItem(it,suffix){
+  lbody.innerHTML=`<p class="kind">${esc(tx(L[S.id].title))}${suffix}</p><div id="ibox"></div>`;
+  const box=document.getElementById("ibox");
+  const api={ready:on=>{const c=document.getElementById("chk");if(c)c.disabled=!on},finish:(ok,ex)=>{if(S.rv==null)graded(ok,ex,true)}};
+  let r={};
+  if(it.t==="info"){box.innerHTML=`<div class="info"><h3>${tx(it.title)}</h3>${typeof it.html==="function"?it.html():tx(it.html)}<div class="wg"></div></div>`;if(it.widget)it.widget(box.querySelector(".wg"))}
+  else{box.innerHTML=`${it.fig?it.fig():""}<div class="q ${it.qsmall?"small":""}">${tx(it.q)}</div><div class="ia"></div>`;r=R[it.t](it,box.querySelector(".ia"),api)}
+  lbody.scrollTop=0;return r;
+}
+function renderItem(){
+  const it=S.cur;S.rv=null;
+  const suffix=S.retry.has(it)?U(" (2ᵉ essai)"," (2nd try)"):S.skipped.has(it)?U(" (question passée)"," (skipped question)"):"";
+  S.r=drawItem(it,suffix);
+  if(S.preview)return pvFooter();
+  const prev=S.hist.length?`<button class="btn" id="bPrev">${U("Précédent","Previous")}</button>`:"";
+  const skip=it.t!=="info"&&S.queue.length>1?`<button class="btn" id="bSkip">${U("Passer","Skip")}</button>`:"";
+  const grp=main=>`<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">${prev}${skip}${main}</div>`;
+  if(it.t==="info"){
+    footer(`<span class="fb"></span>${grp(`<button class="btn primary" id="cont">${U("J'ai compris","Got it")}</button>`)}`);
+    document.getElementById("cont").onclick=()=>{if(!S.hist.includes(it))S.hist.push(it);S.queue.shift();S.done++;next()};
+  } else if(it.t!=="match"){
+    footer(`<span class="fb" style="color:var(--ink-2)">${tx(R[it.t].hint||B("Réponds, puis vérifie.","Answer, then check."))}</span>${grp(`<button class="btn primary" id="chk" ${S.r.readyNow?"":"disabled"}>${U("Vérifier","Check")}</button>`)}`);
+    document.getElementById("chk").onclick=()=>{const ok=S.r.check();if(S.r.lock)S.r.lock();graded(ok,it.ex)};
+  } else footer(`<span class="fb" style="color:var(--ink-2)">${tx(R.match.hint)}</span>${grp("")}`);
+  const bp=document.getElementById("bPrev");if(bp)bp.onclick=()=>rvGo(S.hist.length-1);
+  const bs=document.getElementById("bSkip");if(bs)bs.onclick=skipItem;
+}
+/* ---------- student: skip (comes back at the end) and review previous ---------- */
+function skipItem(){const it=S.queue.shift();S.queue.push(it);S.skipped.add(it);S.skips++;next()}
+function rvGo(i){
+  S.rv=i;const it=S.hist[i];const r=drawItem(it,U(" (révision)"," (review)"));
+  if(it.t!=="info"){if(r.solve)r.solve();if(r.lock)r.lock()}
+  const ans=it.t==="input"?`${U("Réponse : ","Answer: ")}<b>${nf(it.a)}${it.unit?" "+it.unit:""}</b>. `:"";
+  footer(`<div class="fb"><strong class="verdict">${U("Révision","Review")} ${i+1} / ${S.hist.length}</strong>${it.t!=="info"?ans+(it.ex?`<span>${tx(it.ex)}</span>`:""):`<span style="color:var(--ink-2)">${U("Relis la leçon, puis reviens à ta question.","Read the lesson again, then go back to your question.")}</span>`}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="btn" id="rvPrev" ${i===0?"disabled":""}>${U("Précédent","Previous")}</button><button class="btn" id="rvNext" ${i===S.hist.length-1?"disabled":""}>${U("Suivant","Next")}</button><button class="btn primary" id="rvBack">${U("Revenir à ma question","Back to my question")}</button></div>`);
+  document.getElementById("rvPrev").onclick=()=>rvGo(i-1);document.getElementById("rvNext").onclick=()=>rvGo(i+1);
+  document.getElementById("rvBack").onclick=()=>{S.rv=null;renderItem()};
+}
+/* ---------- tutor preview mode: browse without answering ---------- */
+function pvGo(i){if(i<0)i=0;if(i>=S.items.length)return pvEnd();S.pi=i;S.cur=S.items[i];S.phase="answer";S.shown=false;lprog.style.width=(i/S.items.length*100)+"%";comboEl.textContent="";renderItem()}
+function pvNav(){return `<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="pvPrev" ${S.pi===0?"disabled":""}>${U("Précédent","Previous")}</button>${S.cur.t!=="info"&&!S.shown?`<button class="btn" id="pvShow">${U("Voir la réponse","Show answer")}</button>`:""}<button class="btn primary" id="pvNext">${S.pi===S.items.length-1?U("Terminer","Finish"):U("Suivant","Next")}</button></div>`}
+function pvWire(){document.getElementById("pvPrev").onclick=()=>pvGo(S.pi-1);document.getElementById("pvNext").onclick=()=>pvGo(S.pi+1);const s=document.getElementById("pvShow");if(s)s.onclick=pvShow}
+function pvFooter(){footer(`<span class="fb" style="color:var(--ink-2)">${U("Aperçu tuteur","Tutor preview")} : ${S.pi+1} / ${S.items.length}</span>${pvNav()}`);pvWire()}
+function pvShow(){const it=S.cur;S.shown=true;if(S.r&&S.r.solve)S.r.solve();if(S.r&&S.r.lock)S.r.lock();
+  const ans=it.t==="input"?`${U("Réponse : ","Answer: ")}<b>${nf(it.a)}${it.unit?" "+it.unit:""}</b>. `:"";
+  footer(`<div class="fb"><strong class="verdict" style="color:var(--green)">${U("Réponse","Answer")}</strong>${ans}${it.ex?`<span>${tx(it.ex)}</span> `:""}${it.shape?`<span>${tx(it.shape)}</span>`:""}</div>${pvNav()}`,"right");pvWire()}
+function pvEnd(){S.phase="end";lprog.style.width="100%";
+  lbody.innerHTML=`<div class="end"><p class="big">${U("Fin de l'aperçu","End of preview")}</p><p style="color:var(--ink-2)">${U("Rien n'a été enregistré.","Nothing was saved.")}</p></div>`;
+  footer(`<span class="fb"></span><div style="display:flex;gap:8px"><button class="btn" id="pvBack">${U("Revenir à la dernière question","Back to the last question")}</button><button class="btn go" id="cont">${U("Retour aux leçons","Back to lessons")}</button></div>`);
+  document.getElementById("cont").onclick=quit;document.getElementById("pvBack").onclick=()=>pvGo(S.items.length-1)}
+document.addEventListener("keydown",e=>{if(!S||!S.preview||!lesson.classList.contains("open")||S.phase==="end")return;if(e.target.closest("input,textarea"))return;if(e.key==="ArrowRight")pvGo(S.pi+1);if(e.key==="ArrowLeft")pvGo(S.pi-1)});
+const PRAISE=[B("Bravo !","Well done!"),B("Excellent !","Excellent!"),B("C'est ça !","That's it!"),B("Parfait !","Perfect!"),B("Très bien !","Very good!")];
+function graded(ok,ex,noRetry){
+  if(S.preview)return pvShow();
+  if(!S.hist.includes(S.cur))S.hist.push(S.cur);
+  const it=S.cur;S.queue.shift();S.done++;
+  if(ok){S.combo++;S.xp+=S.retry.has(it)?5:10;if(!S.retry.has(it))S.firstTry++}
+  else{S.combo=0;S.mistakes++;const q=(typeof it.q==="object"?it.q.fr:String(it.q)).replace(/<[^>]+>/g,"").slice(0,170);if(!S.missed.includes(q))S.missed.push(q);
+    if(!noRetry&&!S.retry.has(it)){S.retry.add(it);S.queue.push(it)}}
+  S.phase="feedback";S.fb={ok,ex,back:!ok&&!noRetry&&S.queue.includes(it),praise:S.combo>=5?B(`${S.combo} bonnes réponses d'affilée !`,`${S.combo} right answers in a row!`):pick(PRAISE),it};
+  setProg();feedbackFooter();
+}
+function feedbackFooter(){const f=S.fb,it=f.it;
+  const ans=it.t==="input"&&!f.ok?`${U("Réponse : ","Answer: ")}<b>${nf(it.a)}${it.unit?" "+it.unit:""}</b>. `:"";
+  const extra=f.ok&&it.shape?`<span>${tx(it.shape)}</span>`:(!f.ok&&it.shape?`<span>${tx(it.shape)}</span>`:"");
+  footer(`<div class="fb" aria-live="polite">${f.ok?`<strong class="verdict" style="color:var(--green)">${tx(f.praise)}</strong>`:`<strong class="verdict" style="color:var(--red)">${U("Pas tout à fait.","Not quite.")}</strong>`}${ans}${f.ex?`<span>${tx(f.ex)}</span> `:""}${extra}${f.back?`<span class="again">${U("Cette question reviendra à la fin.","This question will come back at the end.")}</span>`:""}</div><button class="btn ${f.ok?"go":"primary"}" id="cont">${U("Continuer","Continue")}</button>`,f.ok?"right":"wrong");
+  const c=document.getElementById("cont");c.onclick=next;c.focus({preventScroll:true});
+}
+function finish(again){
+  lprog.style.width="100%";comboEl.textContent="";
+  const D=DB.s;
+  if(!again){S.secs=Math.round((Date.now()-S.t0)/1000);S.stars=S.mistakes<=1?3:S.mistakes<=3?2:1;S.xp+=20;
+    const prev=D.done[S.id];D.done[S.id]={stars:Math.max(S.stars,prev?prev.stars:0),date:todayStr()};
+    D.history.push({id:S.id,at:new Date().toISOString(),stars:S.stars,mistakes:S.mistakes,secs:S.secs,missed:S.missed,skips:S.skips});
+    if(D.history.length>300)D.history=D.history.slice(-300);D.xp+=S.xp;bumpStreak();save();S.phase="end"}
+  lbody.innerHTML=`<div class="end"><p class="big">${U("Leçon terminée !","Lesson complete!")}</p><div class="starbig" aria-label="${S.stars}/3">${starsHTML(S.stars)}</div>
+    <div class="endstats"><div><strong>+${S.xp}</strong>XP</div><div><strong>${S.mistakes}</strong>${U("erreur"+(S.mistakes>1?"s":""),"mistakes")}</div><div><strong>${S.secs}</strong>${U("secondes","seconds")}</div><div><strong>${streakNow()}</strong>${U("jours de série","day streak")}</div></div></div>`;
+  footer(`<span class="fb"></span><button class="btn go" id="cont">${U("Continuer","Continue")}</button>`);
+  document.getElementById("cont").onclick=quit;
+}
+
+/* =====================================================================
+   RENDERERS (one per question type)
+   ===================================================================== */
+const R={};
+R.mcq=(it,el,api)=>{
+  const ord=it.noshuffle?it.choices.map((c,i)=>i):(it._ord||(it._ord=shuffle(it.choices.map((c,i)=>i))));
+  el.innerHTML=`<div class="${it.tf?"tfrow":"choices"} ${it.cols===2?"cols2":""}">${ord.map(i=>`<button class="choice" data-i="${i}" aria-pressed="false">${val(it.choices[i])}</button>`).join("")}</div>`;
+  let sel=null;const bs=[...el.querySelectorAll(".choice")];
+  bs.forEach(b=>b.onclick=()=>{bs.forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");sel=+b.dataset.i;api.ready(true)});
+  return {check:()=>sel===it.a,lock:()=>bs.forEach(b=>{b.disabled=true;const i=+b.dataset.i;if(i===it.a)b.classList.add("right");else if(i===sel)b.classList.add("wrong")}),solve:()=>{sel=it.a;bs.forEach(x=>x.setAttribute("aria-pressed",String(+x.dataset.i===it.a)));api.ready(true)}};
+};
+R.mcq.hint=B("Choisis une réponse.","Choose an answer.");
+R.input=(it,el,api)=>{
+  el.innerHTML=`<div class="numin"><input id="ans" inputmode="decimal" autocomplete="off" aria-label="${U("Ta réponse","Your answer")}">${it.unit?`<span class="unit">${it.unit}</span>`:""}</div>`;
+  const inp=el.querySelector("input");inp.oninput=()=>api.ready(parseNum(inp.value)!==null);
+  inp.onkeydown=e=>{if(e.key==="Enter"){const c=document.getElementById("chk");if(c&&!c.disabled)c.click()}};
+  setTimeout(()=>inp.focus({preventScroll:true}),60);
+  let ok=false;
+  return {check:()=>{const v=parseNum(inp.value);ok=v!==null&&Math.abs(v-it.a)<=it.tol;return ok},lock:()=>{inp.disabled=true;inp.classList.add(ok?"right":"wrong")},solve:()=>{inp.value=nf(it.a);ok=true;api.ready(true)}};
+};
+R.input.hint=B("Écris ta réponse (virgule ou point).","Type your answer (comma or dot).");
+function tilesRenderer(it,el,api,texts,isRight,mono){
+  const bank=it._bank||(it._bank=shuffle(texts.map((t,i)=>i)));const placed=[];
+  const tile=i=>`<button class="tile ${mono?"mono":""}" data-i="${i}">${esc(val(texts[i]))}</button>`;
+  el.innerHTML=`<div class="slots ${it.col?"col":""}"></div><div class="bank ${it.col?"col":""}">${bank.map(tile).join("")}</div>`;
+  const slots=el.querySelector(".slots");
+  const redraw=()=>{slots.innerHTML=placed.map(tile).join("");slots.querySelectorAll(".tile").forEach(t=>t.onclick=()=>{const i=+t.dataset.i;placed.splice(placed.indexOf(i),1);el.querySelector(`.bank .tile[data-i="${i}"]`).classList.remove("used");redraw()});api.ready(isRight.ready(placed))};
+  el.querySelectorAll(".bank .tile").forEach(t=>t.onclick=()=>{if(t.classList.contains("used"))return;t.classList.add("used");placed.push(+t.dataset.i);redraw()});
+  let ok=false;
+  return {check:()=>{ok=isRight.ok(placed);return ok},lock:()=>{slots.classList.add(ok?"right":"wrong");el.querySelectorAll(".tile").forEach(t=>t.disabled=true)},
+    solve:()=>{placed.length=0;isRight.sol().forEach(i=>placed.push(i));el.querySelectorAll(".bank .tile").forEach(t=>t.classList.toggle("used",placed.includes(+t.dataset.i)));redraw();ok=true}};
+}
+R.order=(it,el,api)=>tilesRenderer(it,el,api,it.pieces,{ready:p=>p.length===it.pieces.length,ok:p=>p.every((v,k)=>v===k),sol:()=>it.pieces.map((_,i)=>i)},false);
+R.order.hint=B("Touche les morceaux dans le bon ordre.","Tap the pieces in the right order.");
+R.build=(it,el,api)=>tilesRenderer(it,el,api,it.tiles,{ready:p=>p.length===it.answer.length,ok:p=>p.length===it.answer.length&&p.every((v,k)=>val(it.tiles[v])===val(it.answer[k])),
+  sol:()=>{const used=new Set();return it.answer.map(a=>{const i=it.tiles.findIndex((t,j)=>!used.has(j)&&val(t)===val(a));used.add(i);return i})}},it.mono);
+R.build.hint=B("Touche les morceaux dans le bon ordre.","Tap the pieces in the right order.");
+R.match=(it,el,api)=>{
+  const left=it._l||(it._l=shuffle(it.pairs.map((p,i)=>i))),right=it._r||(it._r=shuffle(it.pairs.map((p,i)=>i)));
+  el.innerHTML=`<div class="match"><div class="col">${left.map(i=>`<button class="mt" data-side="L" data-i="${i}">${esc(val(it.pairs[i][0]))}</button>`).join("")}</div><div class="col">${right.map(i=>`<button class="mt" data-side="R" data-i="${i}">${esc(val(it.pairs[i][1]))}</button>`).join("")}</div></div>`;
+  let sl=null,sr=null,found=0,errs=0;
+  const tryPair=()=>{if(!sl||!sr)return;
+    if(sl.dataset.i===sr.dataset.i){[sl,sr].forEach(b=>{b.classList.remove("sel");b.classList.add("ok");b.disabled=true});found++;
+      if(found===it.pairs.length){const ok=errs===0;api.finish(ok,ok?null:B(`${errs} erreur${errs>1?"s":""} en route. C'est en se trompant qu'on apprend.`,`${errs} mistake${errs>1?"s":""} along the way. Mistakes are how we learn.`))}}
+    else{errs++;const a=sl,b=sr;[a,b].forEach(x=>{x.classList.remove("sel");x.classList.add("bad")});setTimeout(()=>[a,b].forEach(x=>x.classList.remove("bad")),500)}
+    sl=sr=null};
+  el.querySelectorAll(".mt").forEach(b=>b.onclick=()=>{if(b.disabled)return;if(b.dataset.side==="L"){if(sl)sl.classList.remove("sel");sl=b}else{if(sr)sr.classList.remove("sel");sr=b}b.classList.add("sel");tryPair()});
+  return {solve:()=>{el.querySelectorAll(".mt").forEach(b=>{b.classList.add("ok");b.disabled=true})},lock:()=>{}};
+};
+R.match.hint=B("Touche un mot à gauche, puis son partenaire à droite.","Tap a word on the left, then its partner on the right.");
+R.buckets=(it,el,api)=>{
+  const ord=it._o||(it._o=shuffle(it.items.map((x,i)=>i)));
+  el.innerHTML=`<div class="buckets">${it.cats.map(c=>`<div class="bucket" data-c="${c.id}"><h4>${tx(c.l)}</h4><div class="in"></div></div>`).join("")}</div><div class="pool">${ord.map(i=>`<button class="dchip" data-i="${i}">${val(it.items[i].h)}</button>`).join("")}</div>`;
+  const pool=el.querySelector(".pool");
+  const upd=()=>api.ready(!pool.querySelector(".dchip"));
+  dnd(el,".dchip",".bucket",(ch,z)=>{z.querySelector(".in").appendChild(ch);upd()});
+  let ok=false;
+  return {check:()=>{ok=[...el.querySelectorAll(".bucket .dchip")].every(ch=>it.items[+ch.dataset.i].c===ch.closest(".bucket").dataset.c);return ok},
+    lock:()=>el.querySelectorAll(".dchip").forEach(ch=>{ch.dataset.lock=1;const b=ch.closest(".bucket");ch.classList.add(b&&it.items[+ch.dataset.i].c===b.dataset.c?"right":"wrong")}),
+    solve:()=>{el.querySelectorAll(".dchip").forEach(ch=>el.querySelector(`.bucket[data-c="${it.items[+ch.dataset.i].c}"] .in`).appendChild(ch));upd();ok=true}};
+};
+R.buckets.hint=B("Fais glisser chaque étiquette dans la bonne case.","Drag each label into the right box.");
+R.labels=(it,el,api)=>{
+  const P=Plot(it.plot),ord=it._o||(it._o=shuffle(it.chips.map((c,i)=>i)));
+  el.innerHTML=`<div class="pw">${P.svg(it.draw?it.draw(P):"")}${it.zones.map((z,i)=>`<div class="zone" data-z="${i}" style="left:${P.sx(z.x)/P.w*100}%;top:${P.sy(z.y)/P.h*100}%"></div>`).join("")}</div><div class="pool">${ord.map(i=>`<button class="dchip" data-k="${it.chips[i].k}">${tx(it.chips[i].l)}</button>`).join("")}</div>`;
+  const pool=el.querySelector(".pool");
+  const upd=()=>api.ready([...el.querySelectorAll(".zone")].every(z=>z.querySelector(".dchip")));
+  dnd(el,".dchip",".zone,.pool",(ch,z)=>{if(z.classList.contains("zone")){const old=z.querySelector(".dchip");if(old&&old!==ch)pool.appendChild(old)}z.appendChild(ch);upd()});
+  let ok=false;
+  return {check:()=>{ok=[...el.querySelectorAll(".zone")].every(z=>{const c=z.querySelector(".dchip");return c&&c.dataset.k===it.zones[+z.dataset.z].k});return ok},
+    lock:()=>el.querySelectorAll(".zone").forEach(z=>{const c=z.querySelector(".dchip");if(c)c.dataset.lock=1;z.classList.add(c&&c.dataset.k===it.zones[+z.dataset.z].k?"right":"wrong")}),
+    solve:()=>{el.querySelectorAll(".zone").forEach(z=>{const c=el.querySelector(`.dchip[data-k="${it.zones[+z.dataset.z].k}"]`);z.appendChild(c)});upd();ok=true}};
+};
+R.labels.hint=B("Fais glisser chaque étiquette (ou touche-la, puis touche la case).","Drag each label (or tap it, then tap the box).");
+function tapLayer(svg,P,onTap){
+  let sx=0,sy=0;
+  svg.addEventListener("pointerdown",e=>{sx=e.clientX;sy=e.clientY});
+  svg.addEventListener("pointerup",e=>{if(Math.hypot(e.clientX-sx,e.clientY-sy)>10)return;const p=svgXY(svg,e);onTap(P.ix(p.x),P.iy(p.y),p)});
+}
+R.tap=(it,el,api)=>{
+  const P=Plot(it.plot),[snx,sny]=it.snap||[0.5,0.5];
+  el.innerHTML=P.svg((it.draw?it.draw(P):"")+`<g class="mk"></g>`,"tap");
+  const svg=el.querySelector("svg"),mk=svg.querySelector(".mk");let marks=[],locked=false,res=null;
+  const draw=()=>{mk.innerHTML=marks.map(([x,y],i)=>`<circle cx="${P.sx(x)}" cy="${P.sy(y)}" r="9" style="fill:${res?(res[i]?"var(--green)":"var(--red)"):"var(--amber)"};stroke:var(--paper-2)" stroke-width="2"/>`).join("")+(res?it.targets.map(([x,y])=>`<circle cx="${P.sx(x)}" cy="${P.sy(y)}" r="13" fill="none" style="stroke:var(--green)" stroke-width="2.5" stroke-dasharray="4 3"/>`).join(""):"");api.ready(marks.length===it.targets.length)};
+  tapLayer(svg,P,(x,y,p)=>{if(locked)return;x=round(Math.round(x/snx)*snx,4);y=round(Math.round(y/sny)*sny,4);
+    const near=marks.findIndex(([a,b])=>Math.hypot(P.sx(a)-p.x,P.sy(b)-p.y)<14);if(near>=0)marks.splice(near,1);else{marks.push([x,y]);if(marks.length>it.targets.length)marks.shift()}draw()});
+  const hit=([x,y])=>it.targets.some(([a,b])=>Math.hypot(P.sx(a)-P.sx(x),P.sy(b)-P.sy(y))<=13);
+  return {check:()=>{res=marks.map(hit);return marks.length===it.targets.length&&it.targets.every(([a,b])=>marks.some(([x,y])=>Math.hypot(P.sx(a)-P.sx(x),P.sy(b)-P.sy(y))<=13))},lock:()=>{locked=true;draw()},solve:()=>{marks=it.targets.map(t=>[...t]);draw()}};
+};
+R.tap.hint=B("Touche le graphique pour placer un point (touche-le encore pour l'enlever).","Tap the graph to place a point (tap it again to remove it).");
+R.plotpoints=(it,el,api)=>{
+  const P=Plot(it.plot),snx=it.plot.xgrid||1,sny=it.plot.ygrid||1;
+  el.innerHTML=`<table class="ttable"><tr><th>x</th>${it.points.map(p=>`<td>${nf(p[0])}</td>`).join("")}</tr><tr><th>y</th>${it.points.map(p=>`<td>${nf(p[1])}</td>`).join("")}</tr></table>${P.svg(`<g class="cv"></g><g class="mk"></g>`,"tap")}`;
+  const svg=el.querySelector("svg"),mk=svg.querySelector(".mk"),cv=svg.querySelector(".cv");let marks=[],locked=false,shown=false;
+  const key=([x,y])=>round(x,3)+"|"+round(y,3),want=new Set(it.points.map(key));
+  const draw=()=>{cv.innerHTML=shown?P.curve(it.f,{from:it.from,to:it.to,color:"var(--c3)"}):"";mk.innerHTML=marks.map(m=>`<circle cx="${P.sx(m[0])}" cy="${P.sy(m[1])}" r="6.5" style="fill:${locked?(want.has(key(m))?"var(--green)":"var(--red)"):"var(--c1)"};stroke:var(--paper-2)" stroke-width="2"/>`).join("");api.ready(marks.length===it.points.length)};
+  tapLayer(svg,P,(x,y,p)=>{if(locked)return;x=round(Math.round(x/snx)*snx,4);y=round(Math.round(y/sny)*sny,4);if(x<P.xmin||x>P.xmax||y<P.ymin||y>P.ymax)return;
+    const near=marks.findIndex(([a,b])=>Math.hypot(P.sx(a)-p.x,P.sy(b)-p.y)<11);if(near>=0)marks.splice(near,1);else if(marks.length<it.points.length+2)marks.push([x,y]);draw()});
+  let ok=false;
+  return {check:()=>{ok=marks.length===it.points.length&&marks.every(m=>want.has(key(m)));return ok},lock:()=>{locked=true;shown=true;if(!ok)marks=marks.concat(it.points.filter(p=>!marks.some(m=>key(m)===key(p))));draw()},solve:()=>{marks=it.points.map(p=>[...p]);ok=true;draw()}};
+};
+R.plotpoints.hint=B("Touche le quadrillage pour placer chaque point.","Tap the grid to plot each point.");
+R.table=(it,el,api)=>{
+  const parts=it.xs.length>5?[it.xs.slice(0,4).map((x,i)=>[x,i]),it.xs.slice(4).map((x,i)=>[x,i+4])]:[it.xs.map((x,i)=>[x,i])];
+  el.innerHTML=parts.map(p=>`<table class="ttable"><tr><th>${it.xname||"x"}</th>${p.map(([x])=>`<td>${nf(x)}</td>`).join("")}</tr><tr><th>${it.fname||"f(x)"}</th>${p.map(([x,i])=>`<td><input class="cell" inputmode="decimal" autocomplete="off" data-i="${i}" aria-label="${it.fname||"f"}(${nf(x)})"></td>`).join("")}</tr></table>`).join("");
+  const cells=[...el.querySelectorAll(".cell")].sort((a,b)=>a.dataset.i-b.dataset.i);
+  cells.forEach((c,i)=>{c.oninput=()=>api.ready(cells.every(x=>parseNum(x.value)!==null));c.onkeydown=e=>{if(e.key==="Enter"){if(cells[i+1])cells[i+1].focus();else{const b=document.getElementById("chk");if(b&&!b.disabled)b.click()}}}});
+  let res=[];
+  return {check:()=>{res=cells.map((c,i)=>{const v=parseNum(c.value);return v!==null&&Math.abs(v-it.f(it.xs[i]))<1e-6});return res.every(Boolean)},
+    lock:()=>cells.forEach((c,i)=>{c.disabled=true;c.classList.add(res[i]?"right":"wrong");if(!res[i])c.value=nf(it.f(it.xs[i]))}),
+    solve:()=>{cells.forEach((c,i)=>c.value=nf(it.f(it.xs[i])));res=cells.map(()=>true);api.ready(true)}};
+};
+R.table.hint=B("Calcule chaque valeur.","Calculate each value.");
+R.axes=(it,el,api)=>{
+  const st={x:null,y:null,xs:null,ys:null};
+  const row=(k,label,opts)=>`<div class="row"><span>${tx(label)}</span>${opts.map((o,i)=>`<button class="btn sm ${st[k]===i?"on":""}" data-k="${k}" data-i="${i}">${typeof o==="number"?nf(o):tx(o)}</button>`).join("")}</div>`;
+  const cnt=(m,s)=>Math.ceil(m/s-1e-9);
+  const render=()=>{
+    const xs=st.xs!=null?it.xsteps[st.xs]:null, ys=st.ys!=null?it.ysteps[st.ys]:null;
+    let prev="";
+    if(xs&&ys){const nx=cnt(it.xmax,xs),ny=cnt(it.ymax,ys);const P=Plot({xmin:0,xmax:nx*xs,ymin:0,ymax:ny*ys,w:320,h:250,xgrid:xs,ygrid:ys,pad:{l:40},xtitle:st.x!=null?it.xt[st.x]:"?",ytitle:st.y!=null?it.yt[st.y]:"?"});
+      prev=P.svg()+`<p class="cap">${U(`${nx} carreau${nx>1?"x":""} en largeur, ${ny} en hauteur`,`${nx} square${nx>1?"s":""} wide, ${ny} high`)}</p>`}
+    el.innerHTML=`<div class="axbox">${row("x",B("Titre de l'axe des abscisses (horizontal)","x-axis title (abscisses, horizontal)"),it.xt)}${row("y",B("Titre de l'axe des ordonnées (vertical)","y-axis title (ordonnées, vertical)"),it.yt)}${row("xs",B("Horizontal : 1 carreau =","Horizontal: 1 square ="),it.xsteps)}${row("ys",B("Vertical : 1 carreau =","Vertical: 1 square ="),it.ysteps)}</div>${prev||`<p class="hint">${U("Choisis les graduations pour voir le repère.","Choose the scales to see the axes.")}</p>`}`;
+    el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{if(st.lock)return;st[b.dataset.k]=+b.dataset.i;render()});
+    api.ready(st.x!=null&&st.y!=null&&st.xs!=null&&st.ys!=null);
+  };
+  render();
+  const good=()=>{const nx=cnt(it.xmax,it.xsteps[st.xs]),ny=cnt(it.ymax,it.ysteps[st.ys]);return st.x===it.xok&&st.y===it.yok&&nx>=4&&nx<=12&&ny>=5&&ny<=12};
+  return {check:good,lock:()=>{st.lock=1;el.querySelectorAll("[data-k]").forEach(b=>b.disabled=true)},
+    solve:()=>{st.x=it.xok;st.y=it.yok;st.xs=it.xsteps.findIndex(s=>{const n=cnt(it.xmax,s);return n>=4&&n<=12});st.ys=it.ysteps.findIndex(s=>{const n=cnt(it.ymax,s);return n>=5&&n<=12});render()}};
+};
+R.axes.hint=B("Choisis les titres et les graduations.","Choose the titles and the scales.");
+R.numline=(it,el,api)=>{
+  let a=-1,ac=true,b=1,bc=true,locked=false,drag=null;
+  const P=Plot({xmin:-6,xmax:6,ymin:-1,ymax:1,w:340,h:96,labels:false,grid:false,pad:{l:16,r:16,t:10,b:10}});
+  const notation=()=>`${a===-Infinity?"]−∞":(ac?"[":"]")+nf(a)} ; ${b===Infinity?"+∞[":nf(b)+(bc?"]":"[")}`;
+  el.innerHTML=`<svg class="plot tap" viewBox="0 0 340 96"></svg><div class="notation"></div>
+    <div class="numline-ctl"><div class="grp"><span>${U("Gauche","Left")} :</span><button class="btn sm" data-c="ac1">[ ${U("inclus","included")}</button><button class="btn sm" data-c="ac0">] ${U("exclu","excluded")}</button><button class="btn sm" data-c="ainf">−∞</button></div>
+    <div class="grp"><span>${U("Droite","Right")} :</span><button class="btn sm" data-c="bc1">] ${U("inclus","included")}</button><button class="btn sm" data-c="bc0">[ ${U("exclu","excluded")}</button><button class="btn sm" data-c="binf">+∞</button></div></div>
+    <p class="hint">${U("Fais glisser les bornes sur la droite graduée, puis choisis les crochets.","Drag the ends along the number line, then choose the brackets.")}</p>`;
+  const svg=el.querySelector("svg"),nt=el.querySelector(".notation");
+  const draw=()=>{
+    const y=48,x1=a===-Infinity?P.sx(-6):P.sx(a),x2=b===Infinity?P.sx(6):P.sx(b);
+    let s=`<line x1="${P.sx(-6)}" y1="${y}" x2="${P.sx(6)}" y2="${y}" style="stroke:var(--ink)" stroke-width="1.6"/>`;
+    for(let v=-5;v<=5;v++)s+=`<line x1="${P.sx(v)}" y1="${y-5}" x2="${P.sx(v)}" y2="${y+5}" style="stroke:var(--ink-2)"/><text x="${P.sx(v)}" y="${y+24}" font-size="12" text-anchor="middle" style="fill:var(--ink-2)">${nf(v)}</text>`;
+    s+=`<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" style="stroke:var(--c1)" stroke-width="7"/>`;
+    if(a===-Infinity)s+=`<path d="M${x1-4} ${y} l12 -8 v16z" style="fill:var(--c1)"/>`;else s+=`<circle cx="${x1}" cy="${y}" r="11" style="fill:var(--amber);opacity:.35"/><text x="${x1}" y="${y-12}" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--c1)">${ac?"[":"]"}</text>`;
+    if(b===Infinity)s+=`<path d="M${x2+4} ${y} l-12 -8 v16z" style="fill:var(--c1)"/>`;else s+=`<circle cx="${x2}" cy="${y}" r="11" style="fill:var(--amber);opacity:.35"/><text x="${x2}" y="${y-12}" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--c1)">${bc?"]":"["}</text>`;
+    svg.innerHTML=s; nt.textContent=notation();
+    const on={ac1:a!==-Infinity&&ac,ac0:a!==-Infinity&&!ac,ainf:a===-Infinity,bc1:b!==Infinity&&bc,bc0:b!==Infinity&&!bc,binf:b===Infinity};
+    el.querySelectorAll("[data-c]").forEach(bt=>bt.classList.toggle("on",on[bt.dataset.c]));
+  };
+  el.querySelectorAll("[data-c]").forEach(bt=>bt.onclick=()=>{if(locked)return;const c=bt.dataset.c;
+    if(c==="ac1"||c==="ac0"){if(a===-Infinity)a=Math.max(-5,(b===Infinity?3:b)-3);ac=c==="ac1"}
+    if(c==="bc1"||c==="bc0"){if(b===Infinity)b=Math.min(5,(a===-Infinity?-3:a)+3);bc=c==="bc1"}
+    if(c==="ainf")a=-Infinity;if(c==="binf")b=Infinity;draw()});
+  const mv=e=>{if(!drag)return;const v=clamp(Math.round(P.ix(svgXY(svg,e).x)),-5,5);
+    if(drag==="a"&&(b===Infinity||v<b)&&v!==a){a=v;draw()}else if(drag==="b"&&(a===-Infinity||v>a)&&v!==b){b=v;draw()}};
+  svg.addEventListener("pointerdown",e=>{if(locked)return;const v=P.ix(svgXY(svg,e).x);const da=a===-Infinity?99:Math.abs(v-a),db=b===Infinity?99:Math.abs(v-b);if(da===99&&db===99)return;drag=da<=db?"a":"b";try{svg.setPointerCapture(e.pointerId)}catch(_){}mv(e)});
+  svg.addEventListener("pointermove",mv);svg.addEventListener("pointerup",()=>{drag=null});svg.addEventListener("pointercancel",()=>{drag=null});
+  draw();
+  const t=it.target;
+  return {readyNow:true,check:()=>a===t.a&&b===t.b&&(a===-Infinity||ac===t.ac)&&(b===Infinity||bc===t.bc),lock:()=>{locked=true;el.querySelectorAll("button").forEach(x=>x.disabled=true)},solve:()=>{a=t.a;b=t.b;ac=t.ac;bc=t.bc;draw()}};
+};
+R.numline.hint=B("Construis l'intervalle, puis vérifie.","Build the interval, then check.");
+
+/* ---------- tutor area ---------- */
+function tutorGate(){SCREEN=tutorGate;
+  app.innerHTML=`<div class="top"><h2>${U("Espace tuteur","Tutor area")}</h2>${langBtnHTML()}</div><p style="color:var(--ink-2)">${U("Cette partie est réservée au tuteur.","This part is for the tutor.")}</p>
+    <div class="numin"><input id="code" type="password" inputmode="numeric" autocomplete="off" aria-label="Code"><button class="btn primary" id="codeOk">${U("Entrer","Enter")}</button></div><p id="codeMsg" style="color:var(--red);min-height:1.5em"></p><button class="btn ghost" id="tBack">${U("Retour","Back")}</button>`;
+  const inp=document.getElementById("code");const go=()=>{if(inp.value.trim()===TUTOR_CODE)tutorPanel();else{document.getElementById("codeMsg").textContent=U("Code incorrect.","Wrong code.");inp.value="";inp.focus()}};
+  document.getElementById("codeOk").onclick=go;inp.onkeydown=e=>{if(e.key==="Enter")go()};document.getElementById("tBack").onclick=path;inp.focus();
+}
+function tutorPanel(){SCREEN=tutorPanel;
+  const D=DB.s,done=PATH.filter(id=>D.done[id]).length;
+  app.innerHTML=`<div class="top"><h2>${U("Espace tuteur","Tutor area")}</h2>${langBtnHTML()}</div><p>${esc(getName())} : ${done} / ${PATH.length} ${U("leçons terminées","lessons done")}, ${D.xp} XP.</p>
+    <div class="tpanel">
+      <div><h3>${U("Mode aperçu","Preview mode")}</h3><p>${U("Pour parcourir toutes les leçons sans répondre : boutons Précédent, Voir la réponse et Suivant (flèches du clavier aussi). Rien n'est enregistré tant que ce mode est actif. Il ne concerne que cet appareil.","To browse every lesson without answering: Previous, Show answer and Next buttons (keyboard arrows too). Nothing is saved while this mode is on. It only affects this device.")}</p><button class="btn ${DB.preview?"on":""}" id="tPreview">${DB.preview?U("Désactiver le mode aperçu","Turn preview mode off"):U("Activer le mode aperçu","Turn preview mode on")}</button></div>
+      <div><h3>${U("Prénom de l'élève","Student's first name")}</h3><div class="numin"><input id="tName" maxlength="30" autocomplete="off" value="${esc(getName())}" style="width:240px;font-size:20px"><button class="btn primary" id="tNameOk">${U("Enregistrer","Save")}</button></div></div>
+      <div><h3>${U("Recommencer à zéro","Start again from zero")}</h3><p>${U("Efface toute la progression sur cet appareil. Le prénom est conservé.","Erases all progress on this device. The name is kept.")}</p><button class="btn" id="tReset" style="color:var(--red)">${U("Effacer la progression","Erase progress")}</button></div>
+      <div><h3>${U("Ordre des leçons","Lesson order")}</h3><p>${DB.unlockAll?U("Toutes les leçons sont ouvertes.","All lessons are open."):U("Les leçons s'ouvrent une par une.","Lessons open one by one.")}</p><button class="btn" id="tUnlock">${DB.unlockAll?U("Revenir à l'ordre normal","Back to normal order"):U("Ouvrir toutes les leçons","Open all lessons")}</button></div>
+    </div><button class="btn primary" id="tBack">${U("Retour","Back")}</button>`;
+  const tn=document.getElementById("tName"),tok=document.getElementById("tNameOk");tok.onclick=()=>{D.name=tn.value.trim();save();tok.textContent=U("Enregistré","Saved");setTimeout(tutorPanel,700)};
+  const r=document.getElementById("tReset");r.onclick=()=>{if(r.dataset.c){const n=D.name;DB.s=fresh();DB.s.name=n;DB.unlockAll=false;save();r.textContent=U("Progression effacée","Progress erased");r.disabled=true;setTimeout(tutorPanel,800)}else{r.dataset.c=1;r.textContent=U("Confirmer : tout effacer","Confirm: erase everything")}};
+  document.getElementById("tPreview").onclick=()=>{DB.preview=!DB.preview;save();tutorPanel()};
+  document.getElementById("tUnlock").onclick=()=>{DB.unlockAll=!DB.unlockAll;save();tutorPanel()};
+  document.getElementById("tBack").onclick=path;
+}
+
+/* ---------- report (always in French, for the tutor) ---------- */
+const fmtDate=iso=>new Date(iso).toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"});
+const fmtTime=sec=>sec>=60?`${Math.floor(sec/60)} min ${sec%60} s`:`${sec} s`;
+function reportText(){
+  const D=DB.s,now=new Date();
+  const lines=[`Rapport : Les fonctions, ${getName()||"élève"}`,`Envoyé le ${now.toLocaleDateString("fr-FR")} à ${now.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}`,`XP total : ${D.xp}. Série actuelle : ${streakNow()} jour(s).`,""];
+  const done=PATH.filter(id=>D.done[id]);lines.push(`LEÇONS TERMINÉES : ${done.length} sur ${PATH.length}`);
+  for(const id of done){const runs=D.history.filter(h=>h.id===id),last=runs[runs.length-1];lines.push(last?`- ${L[id].title.fr} : ${fmtDate(last.at)}, ${last.stars}/3 étoiles, ${last.mistakes} erreur(s)${last.skips?`, ${last.skips} passée(s)`:""}, ${fmtTime(last.secs)}${runs.length>1?` (faite ${runs.length} fois)`:""}`:`- ${L[id].title.fr}`)}
+  const todo=PATH.filter(id=>!D.done[id]);lines.push("",`PAS ENCORE FAITES : ${todo.length?todo.map(id=>L[id].title.fr).join(", "):"aucune"}`,"");
+  const missed=[];D.history.filter(h=>h.missed&&h.missed.length).slice(-8).forEach(h=>h.missed.forEach(q=>missed.push(`- [${L[h.id]?L[h.id].title.fr:h.id}] ${q}`)));
+  lines.push("QUESTIONS RATÉES (dernières leçons) :",...(missed.length?missed.slice(-15):["- aucune"]));
+  return lines.join("\n");
+}
+function report(){SCREEN=report;
+  const txt=reportText();
+  app.innerHTML=`<div class="top"><h2>${U("Rapport pour le tuteur","Report for your tutor")}</h2>${langBtnHTML()}</div><div class="report"><p style="color:var(--ink-2)">${U("Envoie ce rapport à ton tuteur quand tu as fini.","Send this report to your tutor when you have finished.")}</p>
+    <textarea readonly id="repTxt">${esc(txt)}</textarea>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><a class="btn primary" style="text-decoration:none" href="mailto:${encodeURIComponent(TUTOR_EMAIL)}?subject=${encodeURIComponent("Maths, les fonctions : "+(getName()||"élève"))}&body=${encodeURIComponent(txt)}">${U("Envoyer par e-mail","Send by e-mail")}</a>
+    <button class="btn" id="copyBtn">${U("Copier le texte","Copy the text")}</button><button class="btn ghost" id="repBack">${U("Retour","Back")}</button></div></div>`;
+  document.getElementById("repBack").onclick=path;
+  const cb=document.getElementById("copyBtn");cb.onclick=async()=>{const t=document.getElementById("repTxt");try{await navigator.clipboard.writeText(t.value)}catch(e){t.select();document.execCommand("copy")}cb.textContent=U("Copié","Copied")};
+}
+
+load(); document.documentElement.lang=LANG; path();
+</script>
+</body>
+</html>
